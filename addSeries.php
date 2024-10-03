@@ -1,13 +1,21 @@
-<!-- < ?php
+<?php
 require_once('WatchList.php');
 include('DbConnect.php');
 
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
-$watchlist = $instanceWatchList->getWatchList();
 
-?> -->
+if (isset($_POST['add'])) {
+    $series_name = $_POST['series_name'];
+    $img_dir = $_POST['img_dir'];
+   /*  $finished = $_POST['finished']; */
+    $instanceWatchList->addSeries($img_dir, $series_name/* , $finished */);
+    header("Location: index.php");
+    exit();
+}
+?>
+
 
 
 <!-- HTML -->
@@ -45,47 +53,33 @@ $watchlist = $instanceWatchList->getWatchList();
 
 
     
-  <!-- Series list container -->
+  <!-- Series container -->
     <div class="container px-5 py-5">
+        <div class="container m-2 text-center add-shows-container">
 
-      <!-- Shows containers -->
-      <div class="container m-2 text-center shows-container">
-        <div class="row">
-            <div class="col-3">
-                <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid">
-            </div>
-            <div class="col-9">
-                <div class="title-row">Tokyo ghoul</div>
-                <div class="row">
-                    <div class="col-3 parts-cells">Season 1</div>
-                    <div class="col-3 parts-cells">Root A</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 1</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 2</div>
-                </div>
-            </div>
+            <form action="addSeries.php" method="post">
+                <!-- Series data -->
+                <label>Series name </label>
+                <input type="text" name="series_name"> <br>
+                <label>IMG</label>
+                <input type="text" name="img_dir"> <br>
+                <!-- <label>Finished </label>
+                <input type="checkbox" name="finished" value="finished"> <br> -->
+                <!-- Parts data -->
+                <!-- <label>Part name </label>
+                <input type="text" name="part_name"> <br>
+                <label>OP </label>
+                <input type="text" name="op"> <br>
+                <label>ED </label>
+                <input type="text" name="ed"> <br> -->
+                <!-- Episodes data -->
+                <!-- <label>Number </label>
+                <input type="number" name="ep_num"> <br>
+                <label>Watche </label>
+                <input type="checkbox" name="watched" value=""><br> -->
+                <input class="btn btn-primary my-2" type="submit" name="add" value="Add series" />
+            </form>
         </div>
-        </div>
-
-        <div class="container m-2 text-center shows-container">
-        <div class="row">
-            <div class="col-3">
-                <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid">
-            </div>
-            <div class="col-9">
-                <div class="title-row">Tokyo ghoul</div>
-                <div class="row">
-                    <div class="col-3 parts-cells">Season 1</div>
-                    <div class="col-3 parts-cells">Root A</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 1</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 2</div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-        
-        
-
     </div>
 
 
