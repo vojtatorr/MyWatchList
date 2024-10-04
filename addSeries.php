@@ -2,15 +2,29 @@
 require_once('WatchList.php');
 include('DbConnect.php');
 
+// Create the database connection
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
 if (isset($_POST['add'])) {
+    // Get the series name from the form
     $series_name = $_POST['series_name'];
-    $img_dir = $_POST['img_dir'];
-   /*  $finished = $_POST['finished']; */
-    $instanceWatchList->addSeries($img_dir, $series_name/* , $finished */);
+
+    // Handle the image file upload
+    $target_dir = "img/";  // Folder to store uploaded images
+    $file_name = basename($_FILES["fileToUpload"]["name"]);
+    $target_file = $target_dir . $file_name;
+
+    // Assuming the file was uploaded correctly
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        // Now store the image path and series name in the database
+        $instanceWatchList->addSeries($series_name, $target_file);  // Both arguments passed
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
+
+    // Redirect to the index page (or wherever you want)
     header("Location: index.php");
     exit();
 }
@@ -57,28 +71,18 @@ if (isset($_POST['add'])) {
     <div class="container px-5 py-5">
         <div class="container m-2 text-center add-shows-container">
 
-            <form action="addSeries.php" method="post">
-                <!-- Series data -->
-                <label>Series name </label>
-                <input type="text" name="series_name"> <br>
-                <label>IMG</label>
-                <input type="text" name="img_dir"> <br>
-                <!-- <label>Finished </label>
-                <input type="checkbox" name="finished" value="finished"> <br> -->
-                <!-- Parts data -->
-                <!-- <label>Part name </label>
-                <input type="text" name="part_name"> <br>
-                <label>OP </label>
-                <input type="text" name="op"> <br>
-                <label>ED </label>
-                <input type="text" name="ed"> <br> -->
-                <!-- Episodes data -->
-                <!-- <label>Number </label>
-                <input type="number" name="ep_num"> <br>
-                <label>Watche </label>
-                <input type="checkbox" name="watched" value=""><br> -->
-                <input class="btn btn-primary my-2" type="submit" name="add" value="Add series" />
-            </form>
+        <form action="addSeries.php" method="post" enctype="multipart/form-data">
+    <!-- Series data -->
+    <label>Series name </label>
+    <input type="text" name="series_name" required> <br>
+
+    <!-- Image Upload -->
+    <label>Select image to upload:</label>
+    <input type="file" name="fileToUpload" id="fileToUpload" required> <br>
+
+    <!-- Submit Button -->
+    <input class="btn btn-primary my-2" type="submit" name="add" value="Add series" />
+    </form>
         </div>
     </div>
 

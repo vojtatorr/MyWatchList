@@ -1,13 +1,22 @@
-<!-- < ?php
+<?php
 require_once('WatchList.php');
 include('DbConnect.php');
 
+// Create database connection
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
-$watchlist = $instanceWatchList->getWatchList();
 
-?> -->
+// Check if a search query has been submitted via GET method
+if (isset($_GET['series_name']) && !empty($_GET['series_name'])) {
+    // If a search query is provided, filter the series by the provided name
+    $series_name = $_GET['series_name'];
+    $selSeries = $instanceWatchList->filterSeries($series_name);
+} else {
+    // If no search query, show all series
+    $selSeries = $instanceWatchList->getWatchList();
+}
+?>
 
 
 <!-- HTML -->
@@ -40,44 +49,30 @@ $watchlist = $instanceWatchList->getWatchList();
                 </li>
             </ul>
         </div>
+            <form class="d-flex ms-auto align-items-center" method="get" action="index.php">
+                <input class="form-control me-2" name="series_name" type="text" placeholder="Series name" aria-label="Search series">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
     </div>
 </nav>
 
-
-    
-  <!-- Series list container -->
-<div class="container px-5 py-5">
-    <div class="row">
-        <div class="col-6">
-            <!-- Shows containers -->
-            <div class="container m-2 shows-container">
-                <div class="row">
-                    <div class="col-6 show-img">
-                        <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid rounded-img">
-                    </div>
-                    <div class="col-6 d-flex align-items-center justify-content-center show-title">
-                        <p>Tokyo Ghoul</p>
+    <!-- Series list container -->
+    <div class="container px-5 py-5">
+        <div class="row">
+            <?php foreach ($selSeries as $series): ?>
+                <!-- Each show container inside a column -->
+                <div class="col-3">
+                    <div class="container m-2 shows-container">
+                        <!-- Series image -->
+                        <img src="<?php echo htmlspecialchars($series['img_dir']); ?>" alt="<?php echo htmlspecialchars($series['series_name']); ?>" class="img-fluid rounded-img">
+                        <!-- Series title -->
+                        <p class="text-center justify-content-center m-1 show-title"><?php echo htmlspecialchars($series['series_name']); ?></p>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-6">
-            <!-- Shows containers -->
-            <div class="container m-2 shows-container">
-                <div class="row">
-                    <div class="col-6 show-img">
-                        <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid rounded-img">
-                    </div>
-                    <div class="col-6 d-flex align-items-center justify-content-center show-title">
-                        <p>Tokyo Ghoul</p>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
-
-</div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
