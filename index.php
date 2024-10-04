@@ -46,47 +46,38 @@ $watchlist = $instanceWatchList->getWatchList();
 
     
   <!-- Series list container -->
-    <div class="container px-5 py-5">
-
-      <!-- Shows containers -->
-      <div class="container m-2 text-center shows-container">
-        <div class="row">
-            <div class="col-3">
-                <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid">
-            </div>
-            <div class="col-9">
-                <div class="title-row">Tokyo ghoul</div>
+<div class="container px-5 py-5">
+    <div class="row">
+        <div class="col-6">
+            <!-- Shows containers -->
+            <div class="container m-2 shows-container">
                 <div class="row">
-                    <div class="col-3 parts-cells">Season 1</div>
-                    <div class="col-3 parts-cells">Root A</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 1</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 2</div>
+                    <div class="col-6 show-img">
+                        <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid rounded-img">
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center show-title">
+                        <p>Tokyo Ghoul</p>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
 
-        <div class="container m-2 text-center shows-container">
-        <div class="row">
-            <div class="col-3">
-                <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid">
-            </div>
-            <div class="col-9">
-                <div class="title-row">Tokyo ghoul</div>
+        <div class="col-6">
+            <!-- Shows containers -->
+            <div class="container m-2 shows-container">
                 <div class="row">
-                    <div class="col-3 parts-cells">Season 1</div>
-                    <div class="col-3 parts-cells">Root A</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 1</div>
-                    <div class="col-3 parts-cells">Tokyo ghoul RE: Season 2</div>
+                    <div class="col-6 show-img">
+                        <img src="img/tokyo_ghoul.jpg" alt="tokyo_ghoul" class="img-fluid rounded-img">
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-center show-title">
+                        <p>Tokyo Ghoul</p>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-
-        
-        
-
     </div>
+
+</div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
