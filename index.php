@@ -8,13 +8,13 @@ $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
 // Check if a search query has been submitted via GET method
-if (isset($_GET['series_name']) && !empty($_GET['series_name'])) {
-    // If a search query is provided, filter the series by the provided name
-    $series_name = $_GET['series_name'];
-    $selSeries = $instanceWatchList->filterSeries($series_name);
+if (isset($_GET['shows_name']) && !empty($_GET['shows_name'])) {
+    // If a search query is provided, filter the shows by the provided name
+    $shows_name = $_GET['shows_name'];
+    $selShows = $instanceWatchList->filterShows($shows_name);
 } else {
-    // If no search query, show all series
-    $selSeries = $instanceWatchList->getWatchList();
+    // If no search query, show all shows
+    $selShows = $instanceWatchList->getWatchList();
 }
 ?>
 
@@ -45,29 +45,29 @@ if (isset($_GET['series_name']) && !empty($_GET['series_name'])) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="addSeries.php">Add series</a>
+                    <a class="nav-link active" aria-current="page" href="addShows.php">Add shows</a>
                 </li>
             </ul>
         </div>
             <form class="d-flex ms-auto align-items-center" method="get" action="index.php">
-                <input class="form-control me-2" name="series_name" type="text" placeholder="Series name" aria-label="Search series">
+                <input class="form-control me-2" name="shows_name" type="text" placeholder="Shows name" aria-label="Search shows">
             <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
     </div>
 </nav>
 
-    <!-- Series list container -->
+    <!-- Shows list container -->
     <div class="container px-5 py-5">
         <div class="row">
-            <?php foreach ($selSeries as $series): ?>
+            <?php foreach ($selShows as $shows): ?>
                 <!-- Each show container inside a column -->
                 <div class="col-3">
                     <div class="container m-2 shows-container">
-                        <!-- Series image -->
-                        <img src="<?php echo htmlspecialchars($series['img_dir']); ?>" alt="<?php echo htmlspecialchars($series['series_name']); ?>" class="img-fluid rounded-img">
-                        <!-- Series title -->
-                        <p class="text-center justify-content-center m-1 show-title"><?php echo htmlspecialchars($series['series_name']); ?></p>
+                        <!-- Shows image -->
+                        <img src="<?php echo htmlspecialchars($shows['img_dir']); ?>" alt="<?php echo htmlspecialchars($shows['shows_name']); ?>" class="img-fluid rounded-img">
+                        <!-- Shows title -->
+                        <p class="text-center justify-content-center m-1 show-title"><?php echo htmlspecialchars($shows['shows_name']); ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>

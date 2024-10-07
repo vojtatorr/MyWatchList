@@ -8,8 +8,11 @@ $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
 if (isset($_POST['add'])) {
-    // Get the series name from the form
-    $series_name = $_POST['series_name'];
+    // Get the shows name from the form
+    $shows_name = $_POST['shows_name'];
+
+    // Get the show status from the form (radio buttons)
+    $show_status = isset($_POST['show-status']) ? $_POST['show-status'] : null;
 
     // Handle the image file upload
     $target_dir = "img/";  // Folder to store uploaded images
@@ -18,8 +21,8 @@ if (isset($_POST['add'])) {
 
     // Assuming the file was uploaded correctly
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        // Now store the image path and series name in the database
-        $instanceWatchList->addSeries($series_name, $target_file);  // Both arguments passed
+        // Now store the image path, shows name, and show status in the database
+        $instanceWatchList->addShows($shows_name, $target_file, $show_status);  // All arguments passed
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
@@ -58,7 +61,7 @@ if (isset($_POST['add'])) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="addSeries.php">Add series</a>
+                    <a class="nav-link active" aria-current="page" href="addshows.php">Add shows</a>
                 </li>
             </ul>
         </div>
@@ -67,21 +70,42 @@ if (isset($_POST['add'])) {
 
 
     
-  <!-- Series container -->
+  <!-- shows container -->
     <div class="container px-5 py-5">
         <div class="container m-2 text-center add-shows-container">
 
-        <form action="addSeries.php" method="post" enctype="multipart/form-data">
-    <!-- Series data -->
-    <label>Series name </label>
-    <input type="text" name="series_name" required> <br>
+        <form action="addshows.php" method="post" enctype="multipart/form-data">
+    <!-- shows data -->
+    <div class="container m-2">
+        <label>Name </label>
+        <input type="text" name="shows_name" required> <br>
+    </div>
 
     <!-- Image Upload -->
-    <label>Select image to upload:</label>
-    <input type="file" name="fileToUpload" id="fileToUpload" required> <br>
+    <div class="container m-2">
+        <label>Select image</label>
+        <input type="file" name="fileToUpload" id="fileToUpload" required> <br>
+    </div>
+
+    <!-- Radio buttons -->
+    <div class="container status-radiobuttons">
+        <label>Show status</label>
+        <div class="container">
+            <label>To watch</label>
+            <input type="radio" name="show-status" value="1">
+            <label>Watching</label>
+            <input type="radio" name="show-status" value="2">
+            <label>Pause</label>
+            <input type="radio" name="show-status" value="3">
+            <label>Finished</label>
+            <input type="radio" name="show-status" value="4">
+        </div>
+    </div>
+
 
     <!-- Submit Button -->
-    <input class="btn btn-primary my-2" type="submit" name="add" value="Add series" />
+    <input class="btn btn-primary my-2" type="submit" name="add" value="Add shows" />
+
     </form>
         </div>
     </div>

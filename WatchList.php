@@ -10,33 +10,35 @@ class WatchList
         $this->dbConn = $dbConn;
     }
 
-    // Retrieve all series from the 'series' table
+    // Retrieve all shows from the 'shows' table
     public function getWatchList()
     {
-        $stmt = $this->dbConn->prepare("SELECT * FROM series");
+        $stmt = $this->dbConn->prepare("SELECT * FROM shows");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Add a series to the 'series' table
-    public function addSeries($series_name, $img_dir){
-    $sql = "INSERT INTO series (series_name, img_dir) VALUES (:series_name, :img_dir)";
+    // Add a shows to the 'shows' table
+    public function addShows($shows_name, $img_dir, $show_status){
+    $sql = "INSERT INTO shows (shows_name, img_dir, show_status) VALUES (:shows_name, :img_dir, :show_status)";
     $stmt = $this->dbConn->prepare($sql);
-    $stmt->bindParam(':series_name', $series_name, PDO::PARAM_STR);
+    $stmt->bindParam(':shows_name', $shows_name, PDO::PARAM_STR);
     $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR); // Insert file name (img_dir)
+    $stmt->bindParam(':show_status', $show_status, PDO::PARAM_INT);
+
     return $stmt->execute();
     }
 
-    public function filterSeries($series_name)
+    public function filtershows($shows_name)
     {
         // Základní SQL dotaz
-        $sql = "SELECT * FROM series WHERE 1=1";
+        $sql = "SELECT * FROM shows WHERE 1=1";
         $params = [];
 
         // Přidání podmínek pro filtraci podle parametrů
-        if (!empty($series_name)) {
-            $sql .= " AND series_name LIKE :series_name";
-            $params[':series_name'] = '%' . $series_name . '%';
+        if (!empty($shows_name)) {
+            $sql .= " AND shows_name LIKE :shows_name";
+            $params[':shows_name'] = '%' . $shows_name . '%';
         }
 
         // Příprava SQL dotazu

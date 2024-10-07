@@ -11999,4 +11999,11 @@ body {
 
 .rounded-img {
   border-radius: 8px; /* Adjust the value for desired roundness */
+}
+
+.add-shows-container .status-radiobuttons {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: -moz-fit-content;
+  width: fit-content;
 }/*# sourceMappingURL=custom.css.map */
