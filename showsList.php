@@ -7,9 +7,15 @@ $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
-
-$selShows = $instanceWatchList->getActiveShows();
-
+// Check if a search query has been submitted via GET method
+if (isset($_GET['shows_name']) && !empty($_GET['shows_name'])) {
+    // If a search query is provided, filter the shows by the provided name
+    $shows_name = $_GET['shows_name'];
+    $selShows = $instanceWatchList->filterShows($shows_name);
+} else {
+    // If no search query, show all shows
+    $selShows = $instanceWatchList->getWatchList();
+}
 ?>
 
 
@@ -44,16 +50,21 @@ $selShows = $instanceWatchList->getActiveShows();
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="addShows.php">Add shows</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="addPart.php">Add part</a>
-                </li>
             </ul>
         </div>
+
     </div>
 </nav>
 
+    <div class="container mt-5">
+        <form class="d-flex align-items-center justify-content-center" method="get" action="showsList.php">
+            <input class="form-control" name="shows_name" type="text" placeholder="Shows name" aria-label="Search shows" style="width: 600px;">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+    </div>
+
     <!-- Shows list container -->
-    <div class="container px-5 py-5">
+    <div class="container px-5 py-2">
         <div class="row">
             <?php foreach ($selShows as $shows): ?>
                 <!-- Each show container inside a column -->

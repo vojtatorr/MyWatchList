@@ -18,7 +18,7 @@ class WatchList
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Add a shows to the 'shows' table
+    // Add a show to the 'shows' table
     public function addShows($shows_name, $img_dir, $show_status){
     $sql = "INSERT INTO shows (shows_name, img_dir, show_status) VALUES (:shows_name, :img_dir, :show_status)";
     $stmt = $this->dbConn->prepare($sql);
@@ -28,6 +28,18 @@ class WatchList
 
     return $stmt->execute();
     }
+
+     // Add a part to the 'parts' table
+     public function addPart($part_name,$id_show, $op, $ed){
+        $sql = "INSERT INTO parts (part_name,id_show, op, ed) VALUES (:part_name,:id_show, :op, :ed)";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindParam(':part_name', $part_name, PDO::PARAM_STR);
+        $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
+        $stmt->bindParam(':op', $op, PDO::PARAM_STR);
+        $stmt->bindParam(':ed', $ed, PDO::PARAM_STR);
+    
+        return $stmt->execute();
+        }
 
     public function filtershows($shows_name)
     {
@@ -40,7 +52,7 @@ class WatchList
             $sql .= " AND shows_name LIKE :shows_name";
             $params[':shows_name'] = '%' . $shows_name . '%';
         }
-
+        
         // Příprava SQL dotazu
         $stmt = $this->dbConn->prepare($sql);
 
@@ -53,6 +65,13 @@ class WatchList
         $stmt->execute();
 
         // Návrat výsledků jako pole asociativních polí
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getActiveShows() {
+        $sql = "SELECT * FROM shows WHERE show_status = 1";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

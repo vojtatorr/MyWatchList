@@ -8,24 +8,13 @@ $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
 if (isset($_POST['add'])) {
-    // Get the shows name from the form
-    $shows_name = $_POST['shows_name'];
+    // Get the part name from the form
+    $part_name = $_POST['part_name'];
+    $id_show = $_POST['id_show'];
+    $op = $_POST['op'];
+    $ed = $_POST['ed'];
 
-    // Get the show status from the form (radio buttons)
-    $show_status = isset($_POST['show-status']) ? $_POST['show-status'] : null;
-
-    // Handle the image file upload
-    $target_dir = "img/";  // Folder to store uploaded images
-    $file_name = basename($_FILES["fileToUpload"]["name"]);
-    $target_file = $target_dir . $file_name;
-
-    // Assuming the file was uploaded correctly
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        // Now store the image path, shows name, and show status in the database
-        $instanceWatchList->addShows($shows_name, $target_file, $show_status);  // All arguments passed
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
+    $instanceWatchList->addPart($part_name,$id_show, $op, $ed);
 
     // Redirect to the index page (or wherever you want)
     header("Location: index.php");
@@ -67,6 +56,9 @@ if (isset($_POST['add'])) {
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="addShows.php">Add shows</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="addPart.php">Add parts</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -74,42 +66,37 @@ if (isset($_POST['add'])) {
 
 
     
-  <!-- shows container -->
+  <!-- parts container -->
     <div class="container px-5 py-5">
         <div class="container m-2 text-center add-shows-container">
 
-    <form action="addshows.php" method="post" enctype="multipart/form-data">
-    <!-- shows data -->
+    <form action="addPart.php" method="post" enctype="multipart/form-data">
+    <!-- parts data -->
 
     <div class="container m-2">
         <label>Name </label>
-        <input type="text" name="shows_name" required> <br>
+        <input type="text" name="part_name" required> <br>
     </div>
 
-        <!-- Image Upload -->
     <div class="container m-2">
-        <label>Select image</label>
-        <input type="file" name="fileToUpload" id="fileToUpload" required> <br>
+        <label>Show name </label>
+        <input type="number" name="id_show" required> <br>
     </div>
 
-        <!-- Radio buttons -->
-    <div class="container status-radiobuttons">
-        <label>Show status</label>
-        <div class="container">
-            <label>To watch</label>
-            <input type="radio" name="show-status" value="1">
-            <label>Watching</label>
-            <input type="radio" name="show-status" value="2">
-            <label>Pause</label>
-            <input type="radio" name="show-status" value="3">
-            <label>Finished</label>
-            <input type="radio" name="show-status" value="4">
-        </div>
+    <div class="container m-2">
+        <label>OP </label>
+        <input type="text" name="op" required> <br>
     </div>
+
+    <div class="container m-2">
+        <label>ED </label>
+        <input type="text" name="ed" required> <br>
+    </div>
+
 
 
     <!-- Submit Button -->
-    <input class="btn btn-primary my-2" type="submit" name="add" value="Add shows" />
+    <input class="btn btn-primary my-2" type="submit" name="add" value="Add part" />
 
     </form>
         </div>
