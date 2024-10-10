@@ -69,7 +69,7 @@ class WatchList
     }
 
     public function getActiveShows() {
-        $sql = "SELECT * FROM shows WHERE show_status = 1";
+        $sql = "SELECT * FROM shows WHERE show_status = 2";
         $stmt = $this->dbConn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
