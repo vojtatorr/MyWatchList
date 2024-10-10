@@ -20,7 +20,14 @@ body {
   background-color: #f9f9f9; /* Light background color */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Light box shadow */
 }
-/* Optional: Add a semi-transparent background for better readability */
+
+.active-show-container {
+  border: 2px solid #333; /* Solid border with black or dark grey color */
+  border-radius: 8px; /* Slightly rounded corners */
+  padding: 4px; /* Padding inside the container */
+  background-color: #f9f9f9; /* Light background color */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Light box shadow */
+}
 
 .add-shows-container {
   border: 2px solid #333; /* Solid border with black or dark grey color */
@@ -47,4 +54,20 @@ body {
 
 .custom-width {
   width: 400px; /* You can adjust this value as needed */
+}
+
+.part-name {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: blue;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.episode-box {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(78, 78, 218);
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }

@@ -18,6 +18,14 @@ class WatchList
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Retrieve parts from the 'parts' table
+    public function getShowParts()
+    {
+        $stmt = $this->dbConn->prepare("SELECT * FROM parts");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Add a show to the 'shows' table
     public function addShows($shows_name, $img_dir, $show_status){
     $sql = "INSERT INTO shows (shows_name, img_dir, show_status) VALUES (:shows_name, :img_dir, :show_status)";
