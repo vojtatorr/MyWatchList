@@ -18,10 +18,11 @@ class WatchList
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Retrieve parts from the 'parts' table
-    public function getShowParts()
+    // Retrieve parts where id_show matches the current show's id
+    public function getShowParts($id_shows)
     {
-        $stmt = $this->dbConn->prepare("SELECT * FROM parts");
+        $stmt = $this->dbConn->prepare("SELECT * FROM parts WHERE id_show = :id_shows");
+        $stmt->bindParam(':id_shows', $id_shows, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -38,16 +39,26 @@ class WatchList
     }
 
      // Add a part to the 'parts' table
-     public function addPart($part_name,$id_show, $op, $ed){
-        $sql = "INSERT INTO parts (part_name,id_show, op, ed) VALUES (:part_name,:id_show, :op, :ed)";
+     public function addPart($part_name, $id_show, $op, $ed, $num_of_ep) {
+        // First, convert the number using the epNumConvert function to get the string
+        $num_of_ep_string = $this->epNumConvert($num_of_ep);
+        
+        // Prepare the SQL query
+        $sql = "INSERT INTO parts (part_name, id_show, op, ed, num_of_ep) VALUES (:part_name, :id_show, :op, :ed, :num_of_ep)";
         $stmt = $this->dbConn->prepare($sql);
+        
+        // Bind the parameters
         $stmt->bindParam(':part_name', $part_name, PDO::PARAM_STR);
         $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
         $stmt->bindParam(':op', $op, PDO::PARAM_STR);
         $stmt->bindParam(':ed', $ed, PDO::PARAM_STR);
-    
+        
+        // Bind the converted num_of_ep string instead of the raw number
+        $stmt->bindParam(':num_of_ep', $num_of_ep_string, PDO::PARAM_STR);
+        
+        // Execute the query
         return $stmt->execute();
-        }
+    }
 
     public function filtershows($shows_name)
     {
@@ -81,6 +92,17 @@ class WatchList
         $stmt = $this->dbConn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function epNumConvert($num_of_ep) {
+        $number_array = [];
+
+        for ($x = 1; $x <= $num_of_ep; $x++) {
+            $number_array[] = $x;
+        }
+        
+        $number_of_ep = implode(",", $number_array);
+        return $number_of_ep;
     }
 }
 

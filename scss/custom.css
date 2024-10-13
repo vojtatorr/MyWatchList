@@ -12002,6 +12002,8 @@ body {
 .show-title {
   height: auto; /* Fill the height of the column */
   font-weight: bold;
+  border: 2px solid #333;
+  border-radius: 8px;
 }
 
 .rounded-img {
@@ -12022,15 +12024,93 @@ body {
 .part-name {
   height: auto; /* Fill the height of the column */
   font-weight: bold;
-  background-color: blue;
+  /* background-color: rgb(100, 100, 100); */
   border: 1px solid #ccc;
   border-radius: 8px;
 }
 
-.episode-box {
+.episode-box-unwatched {
   height: auto; /* Fill the height of the column */
   font-weight: bold;
-  background-color: rgb(78, 78, 218);
+  /* background-color: rgb(100, 100, 100); */
   border: 1px solid #ccc;
   border-radius: 8px;
+}
+
+.episode-box-watched {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(83, 164, 11);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.op-container {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(28, 194, 44);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.ed-container {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(168, 29, 29);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.op-container {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(28, 194, 44);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  position: relative; /* Allow absolute positioning of hover box */
+  cursor: pointer; /* Indicate that the container is interactive */
+  text-align: center; /* Center the text */
+}
+
+/* Style for the ED container (if you need it) */
+.ed-container {
+  height: auto; /* Fill the height of the column */
+  font-weight: bold;
+  background-color: rgb(168, 29, 29);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  position: relative; /* Allow absolute positioning of hover box */
+  cursor: pointer;
+  text-align: center; /* Center the text */
+}
+
+/* Hidden hover box */
+.hover-box {
+  position: absolute;
+  top: 100%; /* Position below the OP container */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #748292; /* Bootstrap's primary color */
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  visibility: hidden; /* Initially hidden */
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  z-index: 1000;
+  width: 200px; /* Width of the hover box */
+  text-align: center; /* Center the text inside the hover box */
+}
+
+/* Show hover-box when hovering over the op-container */
+.op-container:hover .hover-box {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s; /* Show immediately on hover */
+}
+
+.ed-container:hover .hover-box {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s; /* Show immediately on hover */
 }/*# sourceMappingURL=custom.css.map */

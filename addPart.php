@@ -13,8 +13,9 @@ if (isset($_POST['add'])) {
     $id_show = $_POST['id_show'];
     $op = $_POST['op'];
     $ed = $_POST['ed'];
+    $ep_num = $_POST['ep_num'];
 
-    $instanceWatchList->addPart($part_name,$id_show, $op, $ed);
+    $instanceWatchList->addPart($part_name,$id_show, $op, $ed, $ep_num);
 
     // Redirect to the index page (or wherever you want)
     header("Location: index.php");
@@ -68,6 +69,11 @@ if (isset($_POST['add'])) {
     <div class="container m-2">
         <label>ED </label>
         <input type="text" name="ed" required> <br>
+    </div>
+
+    <div class="container m-2">
+        <label>Number of episodes </label>
+        <input type="number" name="ep_num" required> <br>
     </div>
 
 
