@@ -7,8 +7,8 @@ $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
-// Get active shows
-$selShows = $instanceWatchList->getActiveShows();
+// Get active show
+$selshow = $instanceWatchList->getActiveshow();
 ?>
 
 <!-- HTML -->
@@ -23,24 +23,27 @@ $selShows = $instanceWatchList->getActiveShows();
   <!-- Navbar -->
   <?php include 'navbar.php'; ?>
 
-  <!-- Shows list container -->
+  <!-- show list container -->
   <div class="container my-5">
 
-    <?php foreach ($selShows as $shows): ?>
+    <?php foreach ($selshow as $show): ?>
     <div class="container my-4 p-2 active-show-container">
         <div class="row">
             <div class="col-3">
-                <!-- Shows image -->
-                <img src="<?php echo htmlspecialchars($shows['img_dir']); ?>" alt="<?php echo htmlspecialchars($shows['shows_name']); ?>" class="img-fluid rounded-img" style="max-width: 400px; height: auto;">
+                <!-- show image -->
+                <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img" style="max-width: 400px; height: auto;">
             </div>
             <div class="col-9 align-items-center">
-                <!-- Shows title -->
-                <p class="p-2 text-center show-title"><?php echo htmlspecialchars($shows['shows_name']); ?></p>
+                <!-- show title -->
+                <p class="p-2 text-center show-title"><?php echo htmlspecialchars($show['show_name']); ?></p>
+
+                <!-- Edit-->
+                <a class="btn btn-warning" href="editShow.php?id=<?php echo $show['id_show']; ?>">Edit</a>
 
                 <!-- Parts and Episodes -->
                 <?php 
                 // Get parts for the current show using the show's id
-                $selParts = $instanceWatchList->getShowParts($shows['id_shows']); // Call using $instanceWatchList
+                $selParts = $instanceWatchList->getShowParts($show['id_show']);
 
                 foreach ($selParts as $parts): ?>
                 <div class="row mb-2">

@@ -7,15 +7,8 @@ $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
-// Check if a search query has been submitted via GET method
-if (isset($_GET['show_name']) && !empty($_GET['show_name'])) {
-    // If a search query is provided, filter the show by the provided name
-    $show_name = $_GET['show_name'];
-    $selshow = $instanceWatchList->filtershow($show_name);
-} else {
-    // If no search query, show all show
-    $selshow = $instanceWatchList->getWatchList();
-}
+// Get active show
+$selshow = $instanceWatchList->getToWatchshow();
 ?>
 
 
@@ -38,7 +31,7 @@ if (isset($_GET['show_name']) && !empty($_GET['show_name'])) {
     <!-- Search bar -->
     <div class="container mt-5">
         <form class="d-flex align-items-center justify-content-center" method="get" action="showList.php">
-            <input class="form-control" name="show_name" type="text" placeholder="Show name" aria-label="Search show" style="width: 600px;">
+            <input class="form-control" name="show_name" type="text" placeholder="show name" aria-label="Search show" style="width: 600px;">
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </div>
@@ -50,7 +43,7 @@ if (isset($_GET['show_name']) && !empty($_GET['show_name'])) {
                 <!-- Each show container inside a column -->
                 <div class="col-2">
                     <div class="container m-2 show-container">
-                        <a class="btn m-0 p-0" href="editShow.php?id=<?php echo $show['id_show']; ?>">
+                    <a class="btn m-0 p-0" href="editShow.php?id=<?php echo $show['id_show']; ?>">
                         <!-- show image -->
                         <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img">
                         <!-- show title -->

@@ -46,7 +46,7 @@ if (isset($_POST['add'])) {
     
   <!-- parts container -->
     <div class="container px-5 py-5">
-        <div class="container m-2 text-center add-shows-container">
+        <div class="container m-2 text-center add-show-container">
 
     <form action="addPart.php" method="post" enctype="multipart/form-data">
     <!-- parts data -->

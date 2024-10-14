@@ -16,6 +16,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="addPart.php">Add part</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="toWatch.php">To watch</a>
+                </li>
             </ul>
         </div>
     </div>

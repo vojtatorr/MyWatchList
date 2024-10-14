@@ -7,8 +7,8 @@ $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
 if (isset($_POST['add'])) {
-    // Shows name from form
-    $shows_name = $_POST['shows_name'];
+    // show name from form
+    $show_name = $_POST['show_name'];
 
     // Handling file upload
     $target_dir = "img/";  // Folder to store uploaded images
@@ -49,8 +49,8 @@ if (isset($_POST['add'])) {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
             echo "The file " . htmlspecialchars($file_name) . " has been uploaded.";
 
-            // Save the shows and the image file path to the database
-            $instanceWatchList->addShows($shows_name, $target_file);
+            // Save the show and the image file path to the database
+            $instanceWatchList->addshow($show_name, $target_file);
 
             // Redirect to the main page (index.php or wherever you want to go)
             header("Location: index.php");

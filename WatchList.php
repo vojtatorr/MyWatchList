@@ -10,7 +10,7 @@ class WatchList
         $this->dbConn = $dbConn;
     }
 
-    // Retrieve all shows from the 'shows' table
+    // Retrieve all show from the 'show' table
     public function getWatchList()
     {
         $stmt = $this->dbConn->prepare("SELECT * FROM shows");
@@ -19,19 +19,21 @@ class WatchList
     }
 
     // Retrieve parts where id_show matches the current show's id
-    public function getShowParts($id_shows)
+    public function getShowParts($id_show)
     {
-        $stmt = $this->dbConn->prepare("SELECT * FROM parts WHERE id_show = :id_shows");
-        $stmt->bindParam(':id_shows', $id_shows, PDO::PARAM_INT);
+        $stmt = $this->dbConn->prepare("SELECT * FROM parts WHERE id_show = :id_show");
+        $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Add a show to the 'shows' table
-    public function addShows($shows_name, $img_dir, $show_status){
-    $sql = "INSERT INTO shows (shows_name, img_dir, show_status) VALUES (:shows_name, :img_dir, :show_status)";
+
+
+    // Add a show to the 'show' table
+    public function addshow($show_name, $img_dir, $show_status){
+    $sql = "INSERT INTO shows (show_name, img_dir, show_status) VALUES (:show_name, :img_dir, :show_status)";
     $stmt = $this->dbConn->prepare($sql);
-    $stmt->bindParam(':shows_name', $shows_name, PDO::PARAM_STR);
+    $stmt->bindParam(':show_name', $show_name, PDO::PARAM_STR);
     $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR); // Insert file name (img_dir)
     $stmt->bindParam(':show_status', $show_status, PDO::PARAM_INT);
 
@@ -60,16 +62,16 @@ class WatchList
         return $stmt->execute();
     }
 
-    public function filtershows($shows_name)
+    public function filtershow($show_name)
     {
         // Základní SQL dotaz
         $sql = "SELECT * FROM shows WHERE 1=1";
         $params = [];
 
         // Přidání podmínek pro filtraci podle parametrů
-        if (!empty($shows_name)) {
-            $sql .= " AND shows_name LIKE :shows_name";
-            $params[':shows_name'] = '%' . $shows_name . '%';
+        if (!empty($show_name)) {
+            $sql .= " AND show_name LIKE :show_name";
+            $params[':show_name'] = '%' . $show_name . '%';
         }
         
         // Příprava SQL dotazu
@@ -87,8 +89,15 @@ class WatchList
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getActiveShows() {
+    public function getActiveshow() {
         $sql = "SELECT * FROM shows WHERE show_status = 2";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getToWatchshow() {
+        $sql = "SELECT * FROM shows WHERE show_status = 1";
         $stmt = $this->dbConn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -104,6 +113,25 @@ class WatchList
         $number_of_ep = implode(",", $number_array);
         return $number_of_ep;
     }
+
+    public function editShow($show_name, $img_dir, $show_status, $id_show) {
+        $sql = "UPDATE shows SET show_name = :show_name, img_dir = :img_dir, show_status = :show_status WHERE id_show = :id_show";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindParam(':show_name', $show_name, PDO::PARAM_STR);
+        $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR);
+        $stmt->bindParam(':show_status', $show_status, PDO::PARAM_INT);
+        $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function getShow($id_show) {
+        $sql = "SELECT show_name, img_dir, show_status FROM shows WHERE id_show = :id_show";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }
 
 ?>
