@@ -34,12 +34,11 @@ $selshow = $instanceWatchList->getActiveshow();
                 <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img" style="max-width: 400px; height: auto;">
             </div>
             <div class="col-9 align-items-center">
-                <!-- show title -->
-                <p class="p-2 text-center show-title"><?php echo htmlspecialchars($show['show_name']); ?></p>
-
-                <!-- Edit-->
-                <a class="btn btn-warning" href="editShow.php?id=<?php echo $show['id_show']; ?>">Edit</a>
-
+                    <!-- Edit -->
+                <a href="editShow.php?id=<?php echo $show['id_show']; ?>" class="edit-link">
+                    <!-- show title -->
+                    <p class="p-2 text-center show-title"><?php echo htmlspecialchars($show['show_name']); ?></p>
+                </a>
                 <!-- Parts and Episodes -->
                 <?php 
                 // Get parts for the current show using the show's id

@@ -132,6 +132,14 @@ class WatchList
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function deleteShow($id_show)
+    {
+        $sql = "DELETE FROM shows WHERE id_show = :id_show";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 }
 
 ?>

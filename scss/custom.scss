@@ -151,3 +151,12 @@ body {
   opacity: 1;
   transition-delay: 0s; /* Show immediately on hover */
 }
+
+.edit-link {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Keep the text color same as the parent */
+}
+
+.edit-link:hover {
+  text-decoration: none; /* Ensure it stays without underline on hover */
+}

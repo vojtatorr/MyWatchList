@@ -46,6 +46,14 @@ if (isset($_POST['edit'])) {
     exit();
 }
 
+// Deleting show
+if (isset($_GET['delete'])) {
+    $id_show = $_GET['delete'];
+    $instanceWatchList->deleteShow($id_show);
+    header("Location: index.php");
+    exit();
+}
+
 ?>
 
 <!-- HTML -->
@@ -99,6 +107,9 @@ if (isset($_POST['edit'])) {
                 <!-- Submit Button -->
                 <input class="btn btn-primary my-2" type="submit" name="edit" value="Edit show" />
             </form>
+
+            <!-- Delete -->
+            <a class="btn btn-warning" href="editshow.php?delete=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this show?');">Delete</a>
         </div>
     </div>
 
