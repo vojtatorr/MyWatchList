@@ -11,7 +11,7 @@
                     <a class="nav-link active" aria-current="page" href="showsList.php">Shows</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="addShows.php">Add show</a>
+                    <a class="nav-link active" aria-current="page" href="addShow.php">Add show</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="addPart.php">Add part</a>

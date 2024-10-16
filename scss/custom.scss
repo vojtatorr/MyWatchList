@@ -160,3 +160,43 @@ body {
 .edit-link:hover {
   text-decoration: none; /* Ensure it stays without underline on hover */
 }
+
+input[type="hidden"] {
+  display: none !important; /* Ensures the hidden input remains invisible */
+}
+
+.autocomplete-suggestions input[type="text"] {
+  border: 1px solid #ccc; /* Applies styling to only visible inputs */
+}
+
+.autocomplete-suggestion {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.autocomplete-suggestion:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hide the default radio button */
+.form-check-input {
+  position: absolute; /* Position off-screen */
+  opacity: 0; /* Make it invisible */
+}
+
+/* Style for the label */
+.form-check-label {
+  cursor: pointer; /* Indicate that it is clickable */
+  padding: 10px; /* Add some padding for a larger clickable area */
+  border: 1px solid #ccc; /* Border to represent the radio button */
+  border-radius: 5px;
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+/* Change the label appearance when the radio is checked */
+.form-check-input:checked + .form-check-label {
+  background-color: #007bff; /* Change background color when checked */
+  color: white; /* Change text color */
+  border-color: #007bff; /* Match the border to the background */
+}
