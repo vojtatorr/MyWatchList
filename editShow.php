@@ -98,7 +98,7 @@ if (isset($_POST['add'])) {
 
 
     <div class="container my-4 p-2 add-show-container">
-    <form action="editshow.php?id=<?= $id_show ?>" method="post" enctype="multipart/form-data">
+    <form action="editshow.php?id=<?= $id_show ?>" id="myForm" method="post" enctype="multipart/form-data">
         <div class="row"> <!-- Row wraps the two columns -->
 
             <!-- Column for image (col-3) -->
@@ -113,36 +113,41 @@ if (isset($_POST['add'])) {
             </div>
 
             <div class="col-8">
-    <!-- Show title -->
-    <div class="mb-3">
-        <label for="show_name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="show_name" name="show_name" value="<?= htmlspecialchars($showToEdit['show_name']); ?>" required>
-    </div>
+                <!-- Show title -->
+                <div class="mb-3">
+                    <label for="show_name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="show_name" name="show_name" value="<?= htmlspecialchars($showToEdit['show_name']); ?>" required>
+                </div>
 
-    <!-- Radio buttons for show status -->
-<div class="mb-3 status-radiobuttons">
-    <label class="form-label">Show status</label>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" id="status_to_watch" name="show-status" value="1" <?= ($showToEdit['show_status'] == 1) ? 'checked' : ''; ?>>
-        <label class="form-check-label" for="status_to_watch">To watch</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" id="status_watching" name="show-status" value="2" <?= ($showToEdit['show_status'] == 2) ? 'checked' : ''; ?>>
-        <label class="form-check-label" for="status_watching">Watching</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" id="status_pause" name="show-status" value="3" <?= ($showToEdit['show_status'] == 3) ? 'checked' : ''; ?>>
-        <label class="form-check-label" for="status_pause">Pause</label>
-    </div>
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" id="status_finished" name="show-status" value="4" <?= ($showToEdit['show_status'] == 4) ? 'checked' : ''; ?>>
-        <label class="form-check-label" for="status_finished">Finished</label>
-    </div>
-    </div>
+                <!-- Radio buttons for show status -->
+                <div class="mb-3 status-radiobuttons">
+                    <label class="form-label">Show status</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="status_to_watch" name="show-status" value="1" <?= ($showToEdit['show_status'] == 1) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="status_to_watch">To watch</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="status_watching" name="show-status" value="2" <?= ($showToEdit['show_status'] == 2) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="status_watching">Watching</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="status_pause" name="show-status" value="3" <?= ($showToEdit['show_status'] == 3) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="status_pause">Pause</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="status_finished" name="show-status" value="4" <?= ($showToEdit['show_status'] == 4) ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="status_finished">Finished</label>
+                    </div>
+                </div>
+
+                <!-- Hidden input to trigger the 'edit' logic in PHP -->
+                <input type="hidden" name="edit" value="1">
 
 
+        <!-- Close the form before additional sections -->
+    </form>
 
-    <!-- Parts and Episodes -->
+
     <?php 
                 // Get parts for the current show using the show's id
     $selParts = $instanceWatchList->getShowParts($id_show );
@@ -207,6 +212,8 @@ if (isset($_POST['add'])) {
                         </div>
                     </div>
                 </div>
+                <!-- Delete Button -->
+                <a class="btn btn-danger flex-fill" href="editshow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
                 <?php endforeach; ?>
 
 
@@ -219,33 +226,66 @@ if (isset($_POST['add'])) {
     </p>
     <div class="collapse" id="addPart">
         <div class="card card-body">
+
+        <form action="editshow.php?id=<?= $id_show ?>" method="post" enctype="multipart/form-data">
+                
+                <!-- Hidden field for show ID -->
+                <input type="hidden" name="id_show" value="<?= htmlspecialchars($id_show); ?>">
+
+                <!-- Part Name input -->
+                <div class="container m-2">
+                    <label>Part Name </label>
+                    <input type="text" name="part_name" required> <br>
+                </div>
+
+                <!-- OP input -->
+                <div class="container m-2">
+                    <label>OP </label>
+                    <input type="text" name="op"> <br>
+                </div>
+
+                <!-- ED input -->
+                <div class="container m-2">
+                    <label>ED </label>
+                    <input type="text" name="ed"> <br>
+                </div>
+
+                <!-- Number of Episodes input -->
+                <div class="container m-2">
+                    <label>Number of Episodes </label>
+                    <input type="number" name="ep_num" required> <br>
+                </div>
+
+                <!-- Submit Button -->
+                <input class="btn btn-primary my-2" type="submit" name="add" value="Add part" />
+            </form>
             
         </div>
     </div>
 </div>
+</div> 
+</div> 
 
 
-
-
-
-
-</div>
-
-</div> <!-- row end -->
-
-<div class="d-flex mb-3">
+    <!-- External buttons for submitting and deleting -->
+    <div class="d-flex mb-3">
         <!-- Submit Button -->
-        <button class="btn btn-primary flex-fill me-2" type="submit" name="edit">Edit show</button>
-        
+        <button class="btn btn-primary flex-fill me-2" type="button" id="externalButton">Edit show</button>
+
         <!-- Delete Button -->
         <a class="btn btn-danger flex-fill" href="editshow.php?deleteShow=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this show?');">Delete</a>
     </div>
-</form>
 </div>
+        
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+    document.getElementById("externalButton").addEventListener("click", function() {
+        document.getElementById("myForm").submit();
+    });
+</script>
 </body>
 
 </html>

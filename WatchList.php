@@ -140,11 +140,10 @@ class WatchList
         return $stmt->execute();
     }
 
-    public function deletePart($id_part)
-    {
-        $sql = "DELETE FROM parts WHERE id_part = :id_part";
-        $stmt = $this->dbConn->prepare($sql);
-        $stmt->bindParam(':id_part', $id_show, PDO::PARAM_INT);
+    public function deletePart($id_part) {
+        $query = "DELETE FROM parts WHERE id_part = :id_part";
+        $stmt = $this->dbConn->prepare($query);
+        $stmt->bindParam(':id_part', $id_part, PDO::PARAM_INT);
         return $stmt->execute();
     }
 
