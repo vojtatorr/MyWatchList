@@ -124,6 +124,18 @@ class WatchList
         return $stmt->execute();
     }
 
+    public function editPart($part_name, $op, $ed, $num_of_ep, $id_part) {
+        $num_of_ep_string = $this->epNumConvert($num_of_ep);
+        $sql = "UPDATE parts SET part_name = :part_name, op = :op, ed = :ed, num_of_ep = :num_of_ep WHERE id_part = :id_part";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindParam(':part_name', $part_name, PDO::PARAM_STR);
+        $stmt->bindParam(':op', $op, PDO::PARAM_STR);
+        $stmt->bindParam(':ed', $ed, PDO::PARAM_STR);
+        $stmt->bindParam(':num_of_ep', $num_of_ep_string, PDO::PARAM_INT);
+        $stmt->bindParam(':id_part', $id_part, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function getShow($id_show) {
         $sql = "SELECT show_name, img_dir, show_status FROM shows WHERE id_show = :id_show";
         $stmt = $this->dbConn->prepare($sql);

@@ -13,7 +13,7 @@ if (isset($_GET['id'])) {  // Access 'id' from URL
     $showToEdit = $instanceWatchList->getShow($id_show);  // Fetch the show details
 }
 
-if (isset($_POST['edit'])) {
+if (isset($_POST['editShow'])) {
     $show_name = $_POST['show_name'];
     $show_status = isset($_POST['show-status']) ? $_POST['show-status'] : null;
     
@@ -46,10 +46,49 @@ if (isset($_POST['edit'])) {
     exit();
 }
 
+if (isset($_POST['editPart'])) {
+    $part_name = $_POST['part_name'];
+    $op = $_POST['op'];
+    $ed = $_POST['ed'];
+    $num_of_ep = $_POST['num_of_ep'];
+    $id_part = $_POST['id_part']; // Use the hidden input to get the part ID
+    
+    // Call the method to edit the part in the database
+    $instanceWatchList->editPart($part_name, $op, $ed, $num_of_ep, $id_part);
+
+    // Redirect to index.php after update
+    header("Location: index.php");
+    exit();
+}
+
 // Deleting show
 if (isset($_GET['deleteShow'])) {
     $id_show = $_GET['deleteShow'];
+
+    // Fetch the show details first to get the image path
+    $showToDelete = $instanceWatchList->getShow($id_show);
+    
+    // Delete the image file if it exists
+    if (file_exists($showToDelete['img_dir'])) {
+        unlink($showToDelete['img_dir']);  // Delete the image file
+    }
+
+    // Fetch all parts associated with the show
+    $partsToDelete = $instanceWatchList->getShowParts($id_show);
+    
+    // Loop through each part and delete them
+    foreach ($partsToDelete as $part) {
+        // Optionally delete any images related to parts if they exist
+        if (file_exists($part['img_dir'])) {
+            unlink($part['img_dir']);  // Delete the part's image file if it exists
+        }
+        // Delete the part from the database
+        $instanceWatchList->deletePart($part['id_part']);
+    }
+
+    // Now delete the show from the database
     $instanceWatchList->deleteShow($id_show);
+    
     header("Location: index.php");
     exit();
 }
@@ -140,8 +179,8 @@ if (isset($_POST['add'])) {
                     </div>
                 </div>
 
-                <!-- Hidden input to trigger the 'edit' logic in PHP -->
-                <input type="hidden" name="edit" value="1">
+                <!-- Hidden input to trigger the 'editShow' logic in PHP -->
+                <input type="hidden" name="editShow" value="1">
 
 
         <!-- Close the form before additional sections -->
@@ -212,8 +251,68 @@ if (isset($_POST['add'])) {
                         </div>
                     </div>
                 </div>
-                <!-- Delete Button -->
-                <a class="btn btn-danger flex-fill" href="editshow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
+
+
+
+<!-- Delete and Edit part -->
+<div class="container mt-4 mb-3">
+    <!-- Delete Button -->
+    <a class="btn btn-danger me-3" href="editshow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
+    
+    <!-- Edit button -->
+        <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#addPart<?= $parts['id_part']; ?>" aria-expanded="false" aria-controls="addPart<?= $parts['id_part']; ?>">
+            Edit part
+        </button>
+    
+    <div class="collapse" id="addPart<?= $parts['id_part']; ?>">
+        <div class="card card-body">
+            <form action="editshow.php?editPart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" method="post" enctype="multipart/form-data">
+                <!-- Hidden field for show ID -->
+                <input type="hidden" name="id_show" value="<?= htmlspecialchars($id_show); ?>">
+                <input type="hidden" name="id_part" value="<?= htmlspecialchars($parts['id_part']); ?>"> <!-- Hidden input for part ID -->
+
+                <!-- Part Name input -->
+                <div class="container m-2">
+                    <label>Part Name </label>
+                    <input type="text" name="part_name" value="<?= htmlspecialchars($parts['part_name']); ?>" required> <br>
+                </div>
+
+                <!-- OP input -->
+                <div class="container m-2">
+                    <label>OP </label>
+                    <input type="text" name="op" value="<?= htmlspecialchars($parts['op']); ?>"> <br>
+                </div>
+
+                <!-- ED input -->
+                <div class="container m-2">
+                    <label>ED </label>
+                    <input type="text" name="ed" value="<?= htmlspecialchars($parts['ed']); ?>"> <br>
+                </div>
+
+                <!-- Number of Episodes input -->
+                <div class="container m-2">
+                    <label>Number of Episodes </label>
+                    <?php 
+                        // Split the num_of_ep string into an array
+                        $episodeArray = explode(',', $parts['num_of_ep']);
+                        
+                        // Get the last episode number
+                        $lastEpisodeNumber = end($episodeArray); // Retrieves the last element of the array
+                    ?>
+                    <input type="text" name="num_of_ep" value="<?= htmlspecialchars($lastEpisodeNumber); ?>" required> <br>
+                </div>
+
+                <!-- Submit Button -->
+                <input class="btn btn-primary my-2" type="submit" name="editPart" value="Edit part" />
+            </form>
+        </div>
+  
+
+
+                        </div>
+                        
+                        </div>
+                        
                 <?php endforeach; ?>
 
 
