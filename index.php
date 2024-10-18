@@ -9,6 +9,23 @@ $instanceWatchList = new WatchList($dbConnection);
 
 // Get active show
 $selshow = $instanceWatchList->getActiveshow();
+
+
+if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
+    $watched_episodes = $_POST['watched_episodes'];
+
+    foreach ($watched_episodes as $part_id => $episodes) {
+        // Convert checked episodes array into a comma-separated string
+        $watched_episodes_string = implode(',', $episodes);
+        
+        // Step 1: Update the watched_ep column in the parts table
+        $instanceWatchList->updateWatchedEpisodes($part_id, $watched_episodes_string);
+    }
+
+    // Redirect to the show page or display a success message
+    header('Location: index.php');
+    exit;
+}
 ?>
 
 <!-- HTML -->
@@ -26,93 +43,87 @@ $selshow = $instanceWatchList->getActiveshow();
   <!-- show list container -->
   <div class="container my-5">
 
+  <form method="post" action="index.php">
+    <input class="btn btn-primary my-2" type="submit" name="saveEp" value="Save changes" />
+
     <?php foreach ($selshow as $show): ?>
     <div class="container my-4 p-2 active-show-container">
         <div class="row">
             <div class="col-3">
-                <!-- show image -->
                 <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img" style="max-width: 400px; height: auto;">
             </div>
             <div class="col-9 align-items-center">
-                    <!-- Edit -->
                 <a href="editShow.php?id=<?php echo $show['id_show']; ?>" class="edit-link">
-                    <!-- show title -->
                     <p class="p-2 text-center show-title"><?php echo htmlspecialchars($show['show_name']); ?></p>
                 </a>
-                <!-- Parts and Episodes -->
-                <?php 
+
+                <?php
                 // Get parts for the current show using the show's id
                 $selParts = $instanceWatchList->getShowParts($show['id_show']);
-
                 foreach ($selParts as $parts): ?>
-                <div class="row mb-2">
-                    <div class="col-2 d-flex flex-column justify-content-center align-items-center">
-                        <!-- Part name -->
-                        <div class="container part-name">
-                            <p class="text-center m-0"><?php echo htmlspecialchars($parts['part_name']); ?></p>
-                        </div>
-
-                        <!-- OP and ED containers side by side with equal width -->
-                        <div class="container d-flex justify-content-center op-ed-container">
-
-                        <div class="op-container flex-grow-1">
-                            <p class="m-0">OP</p>
-
-                            <!-- Hidden hover box -->
-                            <div class="hover-box">
-                                <?php echo htmlspecialchars($parts['op']); ?>
+                    <div class="row mb-2">
+                        <div class="col-2 d-flex flex-column justify-content-center align-items-center">
+                            <div class="container part-name">
+                                <p class="text-center m-0"><?php echo htmlspecialchars($parts['part_name']); ?></p>
                             </div>
                         </div>
 
-                        <div class="ed-container flex-grow-1">
-                            <p class="m-0">ED</p>
-       
-                        <!-- Hidden hover box -->
-                        <div class="hover-box">
-                                <?php echo htmlspecialchars($parts['ed']); ?>
-                            </div>
-                            </div>
-                         </div>
-                    </div>
-                    <div class="col-10">
-                        <div class="row">
-                            <?php
-                            // Split the string 'num_of_ep' into an array using explode
-                            $episode_numbers = explode(',', $parts['num_of_ep']); // e.g., "1,2,3,4,5"
-                            
-                            // Split the string 'watched_ep' into an array
-                            $watched_ep_array = explode(',', $parts['watched_ep']); // e.g., "1,2"
+                        <div class="col-10">
+                            <div class="row">
+                                <?php
+                                $episode_numbers = explode(',', $parts['num_of_ep']); // e.g., "1,2,3,4,5"
+                                $watched_ep_array = explode(',', $parts['watched_ep']); // e.g., "1,2"
 
-                            // Loop through each episode number in the array
-                            foreach ($episode_numbers as $episode_num) {
-                                // Check if the current episode is in the watched episodes array
-                                if (in_array($episode_num, $watched_ep_array)){
-                                    echo '
-                                    <div class="col-1 m-1 d-flex justify-content-center align-items-center episode-box-watched ">
-                                        <!-- Content of the episode box, e.g., episode number -->
-                                        <p class="m-0">' . $episode_num . '</p>
-                                    </div>';
-                                } else {
-                                    echo '
-                                    <div class="col-1 m-1 d-flex justify-content-center align-items-center episode-box-unwatched">
-                                        <!-- Content of the episode box, e.g., episode number -->
-                                        <p class="m-0">' . $episode_num . '</p>
-                                    </div>';
+                                foreach ($episode_numbers as $episode_num) {
+                                    $unique_id = '-show-' . htmlspecialchars($show['show_name']) . '-part-' . htmlspecialchars($parts['part_name']) . '-ep-' . $episode_num;
+
+                                    if (in_array($episode_num, $watched_ep_array)) {
+                                        echo '<input type="checkbox" class="btn-check episode-box-watched" name="watched_episodes[' . $parts['id_part'] . '][]" id="' . $unique_id . '" value="' . $episode_num . '" checked autocomplete="off">';
+                                        echo '<label class="btn col-1 m-1 d-flex justify-content-center align-items-center episode-box-watched" for="' . $unique_id . '">' . $episode_num . '</label>';
+                                    } else {
+                                        echo '<input type="checkbox" class="btn-check episode-box-unwatched" name="watched_episodes[' . $parts['id_part'] . '][]" id="' . $unique_id . '" value="' . $episode_num . '" autocomplete="off">';
+                                        echo '<label class="btn col-1 m-1 d-flex justify-content-center align-items-center episode-box-unwatched" for="' . $unique_id . '">' . $episode_num . '</label>';
+                                    }
                                 }
-                            }
-                            ?>
+                                ?>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php endforeach; ?>
             </div>
         </div>
     </div>
     <?php endforeach; ?>
+</form>
+
 
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- Check box buttons logic -->
+  <script>
+    function toggleWatchedStatus(checkbox) {
+    var checkboxId = checkbox.id;
+    var label = document.querySelector('label[for="' + checkboxId + '"]');
+
+    // If the checkbox is checked (watched)
+    if (checkbox.checked) {
+        checkbox.classList.remove('episode-box-unwatched');
+        checkbox.classList.add('episode-box-watched');
+        
+        label.classList.remove('episode-box-unwatched');
+        label.classList.add('episode-box-watched');
+    } else {
+        // If the checkbox is unchecked (unwatched)
+        checkbox.classList.remove('episode-box-watched');
+        checkbox.classList.add('episode-box-unwatched');
+        
+        label.classList.remove('episode-box-watched');
+        label.classList.add('episode-box-unwatched');
+    }
+}
+</script>
 </body>
 
 </html>

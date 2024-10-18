@@ -255,7 +255,7 @@ if (isset($_POST['add'])) {
 
 
 <!-- Delete and Edit part -->
-<div class="container mt-4 mb-3">
+<div class="container mt-1 mb-3">
     <!-- Delete Button -->
     <a class="btn btn-danger me-3" href="editshow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
     

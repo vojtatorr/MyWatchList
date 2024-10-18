@@ -159,6 +159,14 @@ class WatchList
         return $stmt->execute();
     }
 
+    public function updateWatchedEpisodes($id_part, $watched_ep) {
+        $query = "UPDATE parts SET watched_ep = :watched_ep WHERE id_part = :id_part";
+        $stmt = $this->dbConn->prepare($query);
+        $stmt->bindParam(':watched_ep', $watched_ep);
+        $stmt->bindParam(':id_part', $id_part);
+        $stmt->execute();
+    }
+
 
 
 

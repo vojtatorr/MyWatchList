@@ -66,18 +66,17 @@ body {
   border-radius: 8px;
 }
 
-.episode-box-unwatched {
-  height: auto; /* Fill the height of the column */
-  font-weight: bold;
-  /* background-color: rgb(100, 100, 100); */
-  border: 1px solid #ccc;
+input[type="checkbox"].episode-box-watched + label {
+  background-color: #797c82 !important; /* Green for watched */
+  color: rgb(0, 0, 0);
+  border: 1px solid #000000;
   border-radius: 8px;
 }
 
-.episode-box-watched {
-  height: auto; /* Fill the height of the column */
-  font-weight: bold;
-  background-color: rgb(83, 164, 11);
+/* Targeting the checkbox with the class and adjacent label for 'unwatched' */
+input[type="checkbox"].episode-box-unwatched + label {
+  background-color: #ffffff; /* Red for unwatched */
+  color: rgb(0, 0, 0);
   border: 1px solid #ccc;
   border-radius: 8px;
 }
