@@ -1,8 +1,8 @@
 <?php
+
 require_once('WatchList.php');
 include('DbConnect.php');
 
-// Create the database connection
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
@@ -33,11 +33,7 @@ if (isset($_POST['add'])) {
 }
 ?>
 
-
-
 <!-- HTML -->
-</html>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,56 +42,74 @@ if (isset($_POST['add'])) {
     <?php include 'head.php'; ?>
 </head>
 
-
 <body>
 
     <!-- Navbar -->
-  <?php include 'navbar.php'; ?>
+    <?php include 'navbar.php'; ?>
 
-    
-  <!-- show container -->
-    <div class="container px-5 py-5">
-        <div class="container m-2 text-center add-show-container">
+    <div class="container my-4 p-2 add-show-container">
+        <form action="addshow.php" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <!-- Column for image (col-4) -->
+                <div class="col-4">
+                    <div class="d-flex flex-column">
+                        <label class="text-center">Select image</label>
+                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" required onchange="previewImage()"> <br>
 
-    <form action="addshow.php" method="post" enctype="multipart/form-data">
-    <!-- show data -->
+                        <!-- Image preview -->
+                        <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 300px; height: auto; margin-top:10px;" />
+                    </div>
+                </div>
 
-    <div class="container m-2">
-        <label>Name </label>
-        <input type="text" name="show_name" required> <br>
+                <div class="col-8">
+                    <!-- Show title -->
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="show_name" required> <br>
+                    </div>
+
+                    <!-- Radio buttons for show status -->
+                    <div class="mb-3 status-radiobuttons">
+                        <label class="form-label">Show status</label>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="show-status" value="1" class="form-check-input" id="status_to_watch">
+                            <label class="form-check-label" for="status_to_watch">To watch</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="show-status" value="2" class="form-check-input" id="status_watching">
+                            <label class="form-check-label" for="status_watching">Watching</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="show-status" value="3" class="form-check-input" id="status_pause">
+                            <label class="form-check-label" for="status_pause">Pause</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" name="show-status" value="4" class="form-check-input" id="status_finished">
+                            <label class="form-check-label" for="status_finished">Finished</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <input class="btn btn-primary my-2" type="submit" name="add" value="Add show" />
+                </div>
+            </div>
+        </form>
     </div>
 
-        <!-- Image Upload -->
-    <div class="container m-2">
-        <label>Select image</label>
-        <input type="file" name="fileToUpload" id="fileToUpload" required> <br>
-    </div>
-
-        <!-- Radio buttons -->
-    <div class="container status-radiobuttons">
-        <label>Show status</label>
-        <div class="container">
-            <label>To watch</label>
-            <input type="radio" name="show-status" value="1">
-            <label>Watching</label>
-            <input type="radio" name="show-status" value="2">
-            <label>Pause</label>
-            <input type="radio" name="show-status" value="3">
-            <label>Finished</label>
-            <input type="radio" name="show-status" value="4">
-        </div>
-    </div>
-
-
-    <!-- Submit Button -->
-    <input class="btn btn-primary my-2" type="submit" name="add" value="Add show" />
-
-    </form>
-        </div>
-    </div>
-
-    
-
+    <!-- JavaScript for image preview -->
+    <script>
+        function previewImage() {
+            const file = document.getElementById('fileToUpload').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imgPreview').src = e.target.result;
+                    document.getElementById('imgPreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
