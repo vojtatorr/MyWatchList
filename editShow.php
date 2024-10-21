@@ -15,6 +15,7 @@ if (isset($_GET['id'])) {  // Access 'id' from URL
 
 if (isset($_POST['editShow'])) {
     $show_name = $_POST['show_name'];
+    $show_color = $_POST['show_color']; // This is the selected color from the color picker
     $show_status = isset($_POST['show-status']) ? $_POST['show-status'] : null;
     
     // Default to current image directory if no new file is uploaded
@@ -39,18 +40,20 @@ if (isset($_POST['editShow'])) {
     }
 
     // Update the show in the database, using the current or new image path
-    $instanceWatchList->editShow($show_name, $target_file, $show_status, $id_show);
+    $instanceWatchList->editShow($show_name, $target_file, $show_status, $id_show, $show_color); // Use selected color
 
     // Redirect to index.php after update
     header("Location: index.php");
     exit();
 }
 
+
 if (isset($_POST['editPart'])) {
     $part_name = $_POST['part_name'];
     $op = $_POST['op'];
     $ed = $_POST['ed'];
     $num_of_ep = $_POST['num_of_ep'];
+    $show_color = $_POST['show_color'];
     $id_part = $_POST['id_part']; // Use the hidden input to get the part ID
     
     // Call the method to edit the part in the database
@@ -140,17 +143,26 @@ if (isset($_POST['add'])) {
     <form action="editshow.php?id=<?= $id_show ?>" id="myForm" method="post" enctype="multipart/form-data">
         <div class="row"> <!-- Row wraps the two columns -->
 
-            <!-- Column for image (col-3) -->
-            <div class="col-4">
-                <div class="d-flex">
-                    <label>Select new image </label>
-                    <input type="file" name="fileToUpload" id="fileToUpload"> <br>
-                </div>
-                <div class="m-1">
-                    <img src="<?= htmlspecialchars($showToEdit['img_dir']); ?>" alt="Current Image" style="max-width: 400px; height: auto;">
-                </div>
-            </div>
+            <!-- Column for image (col-4) -->
+                <div class="col-4">
+                    <div class="d-flex">
+                        <label>Select new image </label>
+                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" required onchange="previewImage()"> <br>
+                    </div>
+                    <div class="m-1">
+                        <!-- Preview the newly selected image -->
+                        <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 400px; height: auto; margin-top:10px;" />
 
+                        <!-- Show the current image if no new one is selected -->
+                        <img id="currentImage" src="<?= htmlspecialchars($showToEdit['img_dir']); ?>" alt="Current Image" style="max-width: 400px; height: auto;">
+                    </div>
+
+                    <!-- Color display section -->
+                        <div>
+                            <label for="show_color">Color of show box </label>
+                            <input type="color" id="show_color" name="show_color" value="<?= htmlspecialchars($showToEdit['show_color']); ?>" />
+                        </div>
+                </div>
             <div class="col-8">
                 <!-- Show title -->
                 <div class="mb-3">
@@ -377,14 +389,91 @@ if (isset($_POST['add'])) {
 </div>
         
 
+<script>
+    function previewImage() {
+        const file = document.getElementById('fileToUpload').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imgPreview = document.getElementById('imgPreview');
+                const currentImage = document.getElementById('currentImage');
 
+                // Set the new image's source to the file selected
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'block';  // Show the new image
+                currentImage.style.display = 'none'; // Hide the current image
 
+                // Create a new image object
+                const img = new Image();
+                img.src = e.target.result;
+
+                // When the image loads, calculate the average color
+                img.onload = function() {
+                    const avgColor = calculateAverageColor(img);
+                    
+                    // Set the average color to the color input
+                    document.getElementById('show_color').value = avgColor;
+
+                    // Assign the calculated color to the hidden input for average color
+                    document.getElementById('colorCodeInput').value = avgColor;
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function calculateAverageColor(image) {
+        // Create a canvas to draw the image
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        // Set canvas size to image size
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw the image onto the canvas
+        context.drawImage(image, 0, 0, image.width, image.height);
+
+        // Get the pixel data from the image
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels = imageData.data;
+
+        // Variables to accumulate the RGB values
+        let r = 0, g = 0, b = 0;
+
+        // Loop through all the pixels
+        for (let i = 0; i < pixels.length; i += 4) {
+            r += pixels[i];     // Red
+            g += pixels[i + 1]; // Green
+            b += pixels[i + 2]; // Blue
+        }
+
+        // Calculate the average RGB values
+        const pixelCount = pixels.length / 4;
+        r = Math.floor(r / pixelCount);
+        g = Math.floor(g / pixelCount);
+        b = Math.floor(b / pixelCount);
+
+        // Convert the RGB values to a hex color code
+        return rgbToHex(r, g, b);
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+    }
+
+    // Handle manual color selection
+    document.getElementById('show_color').addEventListener('input', function() {
+        // When a user manually selects a color, ensure the calculated color is not used
+        document.getElementById('colorCodeInput').value = this.value;
+    });
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
     document.getElementById("externalButton").addEventListener("click", function() {
         document.getElementById("myForm").submit();
     });
-</script>
+    </script>
 </body>
 
 </html>

@@ -42,7 +42,7 @@ $selshow = $instanceWatchList->getToWatchshow();
             <?php foreach ($selshow as $show): ?>
                 <!-- Each show container inside a column -->
                 <div class="col-2">
-                    <div class="container m-2 show-container">
+                    <div class="container m-2 show-container" style="background-color: <?php echo htmlspecialchars($show['show_color']) ?: '#ffffff'; ?>;">
                     <a class="btn m-0 p-0" href="editShow.php?id=<?php echo $show['id_show']; ?>">
                         <!-- show image -->
                         <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img">

@@ -30,12 +30,13 @@ class WatchList
 
 
     // Add a show to the 'show' table
-    public function addshow($show_name, $img_dir, $show_status){
-    $sql = "INSERT INTO shows (show_name, img_dir, show_status) VALUES (:show_name, :img_dir, :show_status)";
+    public function addshow($show_name, $img_dir, $show_status,$show_color){
+    $sql = "INSERT INTO shows (show_name, img_dir, show_status, show_color) VALUES (:show_name, :img_dir, :show_status, :show_color)";
     $stmt = $this->dbConn->prepare($sql);
     $stmt->bindParam(':show_name', $show_name, PDO::PARAM_STR);
-    $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR); // Insert file name (img_dir)
+    $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR);
     $stmt->bindParam(':show_status', $show_status, PDO::PARAM_INT);
+    $stmt->bindParam(':show_color', $show_color, PDO::PARAM_STR);
 
     return $stmt->execute();
     }
@@ -114,13 +115,14 @@ class WatchList
         return $number_of_ep;
     }
 
-    public function editShow($show_name, $img_dir, $show_status, $id_show) {
-        $sql = "UPDATE shows SET show_name = :show_name, img_dir = :img_dir, show_status = :show_status WHERE id_show = :id_show";
+    public function editShow($show_name, $img_dir, $show_status, $id_show, $show_color) {
+        $sql = "UPDATE shows SET show_name = :show_name, img_dir = :img_dir, show_status = :show_status, show_color = :show_color WHERE id_show = :id_show";
         $stmt = $this->dbConn->prepare($sql);
         $stmt->bindParam(':show_name', $show_name, PDO::PARAM_STR);
         $stmt->bindParam(':img_dir', $img_dir, PDO::PARAM_STR);
         $stmt->bindParam(':show_status', $show_status, PDO::PARAM_INT);
         $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
+        $stmt->bindParam(':show_color', $show_color, PDO::PARAM_STR);
         return $stmt->execute();
     }
 
@@ -137,7 +139,7 @@ class WatchList
     }
 
     public function getShow($id_show) {
-        $sql = "SELECT show_name, img_dir, show_status FROM shows WHERE id_show = :id_show";
+        $sql = "SELECT show_name, img_dir, show_status, show_color FROM shows WHERE id_show = :id_show";
         $stmt = $this->dbConn->prepare($sql);
         $stmt->bindParam(':id_show', $id_show, PDO::PARAM_INT);
         $stmt->execute();

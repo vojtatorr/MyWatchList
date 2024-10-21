@@ -14,6 +14,8 @@ if (isset($_POST['add'])) {
     // Get the show status from the form (radio buttons)
     $show_status = isset($_POST['show-status']) ? $_POST['show-status'] : null;
 
+    $show_color = isset($_POST['show_color']);
+
     // Handle the image file upload
     $target_dir = "img/";  // Folder to store uploaded images
     $file_name = basename($_FILES["fileToUpload"]["name"]);
@@ -58,6 +60,15 @@ if (isset($_POST['add'])) {
 
                         <!-- Image preview -->
                         <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 300px; height: auto; margin-top:10px;" />
+
+                        <!-- Display the average color and its code -->
+                            <div style="margin-top: 10px;">
+                                <p>Average Color: <span id="colorCodeText" style="font-weight:bold;"></span></p>
+                                <div id="colorBox" style="width: 100px; height: 100px; border: 1px solid #000;"></div>
+                                
+                                <!-- Input field for color code -->
+                                <input type="text" name="show_color" id="colorCodeInput" value="" readonly>
+                            </div>
                     </div>
                 </div>
 
@@ -96,22 +107,75 @@ if (isset($_POST['add'])) {
         </form>
     </div>
 
-    <!-- JavaScript for image preview -->
+    <!-- JavaScript for image preview and color calculation -->
     <script>
         function previewImage() {
             const file = document.getElementById('fileToUpload').files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    document.getElementById('imgPreview').src = e.target.result;
-                    document.getElementById('imgPreview').style.display = 'block';
+                    const imgPreview = document.getElementById('imgPreview');
+                    imgPreview.src = e.target.result;
+                    imgPreview.style.display = 'block';
+
+                    imgPreview.onload = function () {
+                        calculateAverageColor(imgPreview);
+                    };
                 };
                 reader.readAsDataURL(file);
             }
         }
+
+        function calculateAverageColor(image) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas dimensions to match the image
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    // Draw the image on the canvas
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    // Get pixel data
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    let r = 0, g = 0, b = 0;
+    const pixelCount = data.length / 4; // Each pixel is made up of 4 values (R, G, B, A)
+
+    // Loop through each pixel and sum up the RGB values
+    for (let i = 0; i < data.length; i += 4) {
+        r += data[i];     // Red
+        g += data[i + 1]; // Green
+        b += data[i + 2]; // Blue
+    }
+
+    // Calculate average color
+    r = Math.floor(r / pixelCount);
+    g = Math.floor(g / pixelCount);
+    b = Math.floor(b / pixelCount);
+
+    // Convert RGB to hex
+    const hexColor = rgbToHex(r, g, b);
+
+    // Display the hex color code in the span
+    document.getElementById('colorCodeText').innerText = hexColor;
+
+    // Set the background color of the box
+    document.getElementById('colorBox').style.backgroundColor = hexColor;
+
+    // Set the value of the input field
+    document.getElementById('colorCodeInput').value = hexColor;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+}
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
+

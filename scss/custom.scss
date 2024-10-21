@@ -42,6 +42,7 @@ body {
   font-weight: bold;
   border: 2px solid #333;
   border-radius: 8px;
+  background-color: white;
 }
 
 .rounded-img {
@@ -58,27 +59,37 @@ body {
   width: 400px; /* You can adjust this value as needed */
 }
 
+.part-container {
+  border-bottom: 2px solid #000000;
+  margin: 8px;
+  padding: 0 10px; /* Optional: Add some padding for better spacing */
+  margin-left: auto;
+  margin-right: auto; /* Center the border */
+}
+
 .part-name {
   height: auto; /* Fill the height of the column */
   font-weight: bold;
-  /* background-color: rgb(100, 100, 100); */
-  border: 1px solid #ccc;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid #000000;
   border-radius: 8px;
 }
 
 input[type="checkbox"].episode-box-watched + label {
-  background-color: #797c82 !important; /* Green for watched */
+  background-color: #0d6efd !important; /* Green for watched */
   color: rgb(0, 0, 0);
-  border: 1px solid #000000;
+  border: 2px solid #000000;
   border-radius: 8px;
+  font-weight: bold;
 }
 
 /* Targeting the checkbox with the class and adjacent label for 'unwatched' */
 input[type="checkbox"].episode-box-unwatched + label {
   background-color: #ffffff; /* Red for unwatched */
   color: rgb(0, 0, 0);
-  border: 1px solid #ccc;
+  border: 2px solid #000000;
   border-radius: 8px;
+  font-weight: bold;
 }
 
 .op-container {
@@ -126,7 +137,7 @@ input[type="checkbox"].episode-box-unwatched + label {
   top: 100%; /* Position below the OP container */
   left: 50%;
   transform: translateX(-50%);
-  background-color: #748292; /* Bootstrap's primary color */
+  background-color: #748292;
   color: white;
   padding: 10px;
   border-radius: 5px;
@@ -151,33 +162,6 @@ input[type="checkbox"].episode-box-unwatched + label {
   transition-delay: 0s; /* Show immediately on hover */
 }
 
-.edit-link {
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Keep the text color same as the parent */
-}
-
-.edit-link:hover {
-  text-decoration: none; /* Ensure it stays without underline on hover */
-}
-
-input[type="hidden"] {
-  display: none !important; /* Ensures the hidden input remains invisible */
-}
-
-.autocomplete-suggestions input[type="text"] {
-  border: 1px solid #ccc; /* Applies styling to only visible inputs */
-}
-
-.autocomplete-suggestion {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #ddd;
-}
-
-.autocomplete-suggestion:hover {
-  background-color: #f0f0f0;
-}
-
 /* Hide the default radio button */
 .form-check-input {
   position: absolute; /* Position off-screen */
@@ -190,7 +174,7 @@ input[type="hidden"] {
   padding: 10px; /* Add some padding for a larger clickable area */
   border: 1px solid #ccc; /* Border to represent the radio button */
   border-radius: 5px;
-  transition: background-color 0.3s ease; /* Smooth background transition */
+  transition: background-color #0d6efd 0.3s ease; /* Smooth background transition */
 }
 
 /* Change the label appearance when the radio is checked */
@@ -198,4 +182,14 @@ input[type="hidden"] {
   background-color: #007bff; /* Change background color when checked */
   color: white; /* Change text color */
   border-color: #007bff; /* Match the border to the background */
+}
+
+.edit-link {
+  color: black; /* Makes the link text black */
+  text-decoration: none; /* Removes the underline */
+}
+
+.edit-link:hover {
+  color: black; /* Ensures the link stays black when hovered */
+  text-decoration: none; /* Ensures underline is removed on hover as well */
 }
