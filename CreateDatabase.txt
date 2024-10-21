@@ -1,0 +1,27 @@
+-- Create the database
+CREATE DATABASE IF NOT EXISTS `watchlist` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `watchlist`;
+
+-- Create table `parts`
+CREATE TABLE `parts` (
+  `id_part` int(11) NOT NULL AUTO_INCREMENT,
+  `id_show` int(11) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `op` varchar(100) NOT NULL,
+  `ed` varchar(100) NOT NULL,
+  `num_of_ep` varchar(255) NOT NULL,
+  `watched_ep` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_part`),
+  KEY `id_show` (`id_show`),
+  CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`id_show`) REFERENCES `shows` (`id_show`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Create table `shows`
+CREATE TABLE `shows` (
+  `id_show` int(11) NOT NULL AUTO_INCREMENT,
+  `show_name` varchar(120) NOT NULL,
+  `img_dir` varchar(255) NOT NULL,
+  `show_status` int(10) NOT NULL,
+  `show_color` varchar(12) NOT NULL,
+  PRIMARY KEY (`id_show`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
