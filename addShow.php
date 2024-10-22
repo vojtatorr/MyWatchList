@@ -57,7 +57,7 @@ if (isset($_POST['add'])) {
                 <div class="col-4">
                     <div class="d-flex flex-column">
                         <label class="text-center">Select image</label>
-                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" required onchange="previewImage()"> <br>
+                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*"  onchange="previewImage()"> <br>
 
                         <!-- Image preview -->
                         <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 300px; height: auto; margin-top:10px;" />
@@ -81,19 +81,19 @@ if (isset($_POST['add'])) {
                     <div class="mb-3 status-radiobuttons">
                         <label class="form-label">Show status</label>
                         <div class="form-check form-check-inline">
-                            <input type="radio" name="show-status" value="1" class="form-check-input" id="status_to_watch">
+                            <input type="radio" name="show-status" value="1" class="form-check-input" id="status_to_watch" required>
                             <label class="form-check-label" for="status_to_watch">To watch</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" name="show-status" value="2" class="form-check-input" id="status_watching">
+                            <input type="radio" name="show-status" value="2" class="form-check-input" id="status_watching" required>
                             <label class="form-check-label" for="status_watching">Watching</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" name="show-status" value="3" class="form-check-input" id="status_pause">
+                            <input type="radio" name="show-status" value="3" class="form-check-input" id="status_pause" required>
                             <label class="form-check-label" for="status_pause">Pause</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input type="radio" name="show-status" value="4" class="form-check-input" id="status_finished">
+                            <input type="radio" name="show-status" value="4" class="form-check-input" id="status_finished" required>
                             <label class="form-check-label" for="status_finished">Finished</label>
                         </div>
                     </div>

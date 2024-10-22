@@ -140,7 +140,7 @@ if (isset($_POST['add'])) {
 
 
     <div class="container my-4 p-2 add-show-container">
-    <form action="editshow.php?id=<?= $id_show ?>" id="myForm" method="post" enctype="multipart/form-data">
+    <form action="editShow.php?id=<?= $id_show ?>" id="myForm" method="post" enctype="multipart/form-data">
         <div class="row"> <!-- Row wraps the two columns -->
 
             <!-- Column for image (col-4) -->
@@ -269,7 +269,7 @@ if (isset($_POST['add'])) {
 <!-- Delete and Edit part -->
 <div class="container mt-1 mb-3">
     <!-- Delete Button -->
-    <a class="btn btn-danger me-3" href="editshow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
+    <a class="btn btn-danger me-3" href="editShow.php?deletePart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this part?');">Delete</a>
     
     <!-- Edit button -->
         <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#addPart<?= $parts['id_part']; ?>" aria-expanded="false" aria-controls="addPart<?= $parts['id_part']; ?>">
@@ -278,7 +278,7 @@ if (isset($_POST['add'])) {
     
     <div class="collapse" id="addPart<?= $parts['id_part']; ?>">
         <div class="card card-body">
-            <form action="editshow.php?editPart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" method="post" enctype="multipart/form-data">
+            <form action="editShow.php?editPart=<?= $parts['id_part']; ?>&id=<?= $id_show; ?>" method="post" enctype="multipart/form-data">
                 <!-- Hidden field for show ID -->
                 <input type="hidden" name="id_show" value="<?= htmlspecialchars($id_show); ?>">
                 <input type="hidden" name="id_part" value="<?= htmlspecialchars($parts['id_part']); ?>"> <!-- Hidden input for part ID -->
@@ -338,7 +338,7 @@ if (isset($_POST['add'])) {
     <div class="collapse" id="addPart">
         <div class="card card-body">
 
-        <form action="editshow.php?id=<?= $id_show ?>" method="post" enctype="multipart/form-data">
+        <form action="editShow.php?id=<?= $id_show ?>" method="post" enctype="multipart/form-data">
                 
                 <!-- Hidden field for show ID -->
                 <input type="hidden" name="id_show" value="<?= htmlspecialchars($id_show); ?>">
@@ -384,7 +384,7 @@ if (isset($_POST['add'])) {
         <button class="btn btn-primary flex-fill me-2" type="button" id="externalButton">Edit show</button>
 
         <!-- Delete Button -->
-        <a class="btn btn-danger flex-fill" href="editshow.php?deleteShow=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this show?');">Delete</a>
+        <a class="btn btn-danger flex-fill" href="editShow.php?deleteShow=<?= $id_show; ?>" onclick="return confirm('Are you sure you want to delete this show?');">Delete</a>
     </div>
 </div>
         
