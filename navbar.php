@@ -7,14 +7,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item mx-1">
                     <a class="nav-link active" aria-current="page" href="showsList.php">Shows</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="addShow.php">Add show</a>
-                </li>
-                <li class="nav-item">
+                <li class="nav-item mx-1">
                     <a class="nav-link active" aria-current="page" href="toWatch.php">To watch</a>
+                </li>
+                <li class="nav-item mx-2">
+                    <a class="nav-link active" aria-current="page" href="addShow.php">Add show</a>
                 </li>
             </ul>
         </div>

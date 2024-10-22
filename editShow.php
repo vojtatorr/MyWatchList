@@ -23,7 +23,7 @@ if (isset($_POST['editShow'])) {
 
     // Handle file upload if a file was provided
     if (!empty($_FILES["fileToUpload"]["name"])) {
-        $target_dir = "img/";
+        $target_dir = "showImg/";
         $file_name = basename($_FILES["fileToUpload"]["name"]);
         $target_file = $target_dir . $file_name;
 
@@ -193,9 +193,6 @@ if (isset($_POST['add'])) {
 
                 <!-- Hidden input to trigger the 'editShow' logic in PHP -->
                 <input type="hidden" name="editShow" value="1">
-
-
-        <!-- Close the form before additional sections -->
     </form>
 
 

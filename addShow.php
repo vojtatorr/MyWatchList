@@ -18,7 +18,7 @@ if (isset($_POST['add'])) {
     $show_color = isset($_POST['show_color']) ? $_POST['show_color'] : null; // Adjusted this line
 
     // Handle the image file upload
-    $target_dir = "img/";  // Folder to store uploaded images
+    $target_dir = "showImg/";  // Folder to store uploaded images
     $file_name = basename($_FILES["fileToUpload"]["name"]);
     $target_file = $target_dir . $file_name;
 
