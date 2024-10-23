@@ -5,9 +5,14 @@ include('DbConnect.php');
 // Create database connection
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
+
+if (!$dbConnection) {
+    die("Database connection failed: " . $conn->connect_error);
+}
+
 $instanceWatchList = new WatchList($dbConnection);
 
-// Get active show
+// Get active shows
 $selshow = $instanceWatchList->getToWatchshow();
 ?>
 
@@ -22,33 +27,38 @@ $selshow = $instanceWatchList->getToWatchshow();
 </head>
 
 <body>
-  <!-- Navbar -->
-  <?php include 'navbar.php'; ?>
+    <!-- Navbar -->
+    <?php include 'navbar.php'; ?>
 
     <!-- Search bar -->
     <div class="container mt-5">
         <form class="d-flex align-items-center justify-content-center" method="get" action="showList.php">
-            <input class="form-control" name="show_name" type="text" placeholder="show name" aria-label="Search show" style="width: 600px;">
+            <input class="form-control" name="show_name" type="text" placeholder="Show name" aria-label="Search show" style="width: 600px;">
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </div>
 
-    <!-- show list container -->
+    <!-- Show list container -->
+    <!-- Show list container -->
     <div class="container px-5 py-2">
         <div class="row">
-            <?php foreach ($selshow as $show): ?>
-                <!-- Each show container inside a column -->
-                <div class="col-2">
-                    <div class="container m-2 show-container" style="background-color: <?php echo htmlspecialchars($show['show_color']) ?: '#ffffff'; ?>;">
-                    <a class="btn m-0 p-0" href="editShow.php?id=<?php echo $show['id_show']; ?>">
-                        <!-- show image -->
-                        <img src="<?php echo htmlspecialchars($show['img_dir']); ?>" alt="<?php echo htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img">
-                        <!-- show title -->
-                        <p class="text-center justify-content-center m-1 show-title"><?php echo htmlspecialchars($show['show_name']); ?></p>
-                    </a>
+            <?php if (!empty($selshow)): ?>
+                <?php foreach ($selshow as $show): ?>
+                    <!-- Each show container inside a column -->
+                    <div class="col-12 col-md-4 col-lg-2">
+                        <div class="container m-2 show-container text-center" style="background-color: <?= htmlspecialchars($show['show_color']) ?: '#ffffff'; ?>;">
+                            <a class="btn m-0 p-0" href="editShow.php?id=<?= htmlspecialchars($show['id_show']); ?>">
+                                <!-- Show image -->
+                                <img src="<?= htmlspecialchars($show['img_dir']); ?>" alt="<?= htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img">
+                                <!-- Show title -->
+                                <p class="text-center m-1 show-title"><?= htmlspecialchars($show['show_name']); ?></p>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p class="text-center">No shows found.</p>
+            <?php endif; ?>
         </div>
     </div>
 

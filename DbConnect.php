@@ -1,10 +1,7 @@
 <?php 
 class DbConnect 
 { 
-    /* private $server = 'sql8.endora.cz'; 
-    private $dbname = 'vojtec1729527810'; 
-    private $user = 'vojtec1729527810'; 
-    private $pass = 'B)#6tQFu(szX18Gk';  */
+    
     private $server = 'localhost'; 
     private $dbname = 'watchlist'; 
     private $user = 'root'; 

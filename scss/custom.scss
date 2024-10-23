@@ -19,6 +19,20 @@ body {
   padding: 4px; /* Padding inside the container */
   background-color: #f9f9f9; /* Light background color */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Light box shadow */
+  object-fit: cover;
+}
+
+@media (max-width: 425px) {
+  .show-container {
+    max-width: 320px; /* Set to a fixed size for all small devices */
+    margin-left: auto;
+    margin-right: auto; /* Center the container */
+  }
+}
+
+.show-container img {
+  width: 100%; /* Ensures image takes full width of its container */
+  height: auto; /* Maintain the aspect ratio */
 }
 
 .active-show-container {
@@ -43,6 +57,8 @@ body {
   border: 2px solid #333;
   border-radius: 8px;
   background-color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .rounded-img {
@@ -53,10 +69,6 @@ body {
   border: 1px solid #ccc;
   padding: 10px;
   width: fit-content;
-}
-
-.custom-width {
-  width: 400px; /* You can adjust this value as needed */
 }
 
 .part-container {
@@ -75,21 +87,36 @@ body {
   border-radius: 8px;
 }
 
+/* Targeting the label for 'watched' episodes */
 input[type="checkbox"].episode-box-watched + label {
-  background-color: #0d6efd !important; /* Green for watched */
+  background-color: #0d6efd !important; /* Blue for watched */
   color: rgb(0, 0, 0);
   border: 2px solid #000000;
   border-radius: 8px;
   font-weight: bold;
+  transition: background-color 0.3s; /* Smooth transition */
 }
 
-/* Targeting the checkbox with the class and adjacent label for 'unwatched' */
+/* Hover effect for watched episodes */
+input[type="checkbox"].episode-box-watched + label:hover {
+  background-color: #0056b3 !important; /* Darker blue on hover */
+  border: 2px solid #000000;
+}
+
+/* Targeting the label for 'unwatched' episodes */
 input[type="checkbox"].episode-box-unwatched + label {
-  background-color: #ffffff; /* Red for unwatched */
+  background-color: #ffffff; /* White for unwatched */
   color: rgb(0, 0, 0);
   border: 2px solid #000000;
   border-radius: 8px;
   font-weight: bold;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+/* Hover effect for unwatched episodes */
+input[type="checkbox"].episode-box-unwatched + label:hover {
+  background-color: #e2e6ea71; /* Light grey on hover */
+  border: 2px solid #000000;
 }
 
 .op-container {
