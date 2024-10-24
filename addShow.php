@@ -104,47 +104,54 @@ function resizeImage($source_file, $target_file, $target_width, $target_height) 
 
     <div class="container my-4 p-2 add-show-container">
         <form action="addshow.php" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <!-- Column for image (col-4) -->
-                <div class="col-4">
-                    <div class="d-flex flex-column">
-                        <label class="text-center">Select image</label>
-                        <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" onchange="previewImage()"> <br>
+        <div class="row">
+            <!-- Column for image (col-md-4 for medium screens and larger, col-12 for small screens) -->
+            <div class="col-sm-12 col-md-4 justify-content-center align-items-center">
+                <div class="d-flex flex-column">
+                    <label class="text-center">Select image</label>
+                    <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" onchange="previewImage()"> <br>
 
-                        <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 300px; height: auto; margin-top:10px;" />
+                    <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 300px; height: auto; margin-top:10px;" />
 
-                        <div>
-                            <label for="show_color">Color of show box</label>
-                            <input type="color" id="show_color" name="show_color" value="#ffffff" />
-                        </div>
+                    <div>
+                        <label for="show_color">Color of show box</label>
+                        <input type="color" id="show_color" name="show_color" value="#ffffff" />
                     </div>
                 </div>
+            </div>
 
-                <div class="col-8">
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" name="show_name" required> <br>
-                    </div>
+            <!-- Column for other content (col-md-8 for medium screens and larger, col-12 for small screens) -->
+            <div class="col-sm-12 col-md-8 justify-content-center">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control" name="show_name" required> <br>
+    </div>
 
-                    <div class="mb-3 status-radiobuttons">
-                        <label class="form-label">Show status</label>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="show_status" value="1" class="form-check-input" id="status_to_watch" required>
-                            <label class="form-check-label" for="status_to_watch">To watch</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="show_status" value="2" class="form-check-input" id="status_watching" required>
-                            <label class="form-check-label" for="status_watching">Watching</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="show_status" value="3" class="form-check-input" id="status_pause" required>
-                            <label class="form-check-label" for="status_pause">Pause</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input type="radio" name="show_status" value="4" class="form-check-input" id="status_finished" required>
-                            <label class="form-check-label" for="status_finished">Finished</label>
-                        </div>
-                    </div>
+    <div class="mb-3 status-radiobuttons text-center">
+    <!-- Label for show status, centered horizontally -->
+    <label class="form-label">Show status</label>
+
+    <!-- Wrap radio buttons in a div to ensure they are grouped below the label -->
+    <div>
+        <div class="form-check form-check-inline">
+            <input type="radio" name="show_status" value="1" class="form-check-input" id="status_to_watch" required>
+            <label class="form-check-label" for="status_to_watch">To watch</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="radio" name="show_status" value="2" class="form-check-input" id="status_watching" required>
+            <label class="form-check-label" for="status_watching">Watching</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="radio" name="show_status" value="3" class="form-check-input" id="status_pause" required>
+            <label class="form-check-label" for="status_pause">Pause</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input type="radio" name="show_status" value="4" class="form-check-input" id="status_finished" required>
+            <label class="form-check-label" for="status_finished">Finished</label>
+        </div>
+    </div>
+</div>
+
 
                     <input class="btn btn-primary my-2" type="submit" name="add" value="Add show" />
                 </div>

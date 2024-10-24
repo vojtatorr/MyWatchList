@@ -144,11 +144,15 @@ if (isset($_POST['add'])) {
         <div class="row"> <!-- Row wraps the two columns -->
 
             <!-- Column for image (col-4) -->
-                <div class="col-4">
-                    <div class="d-flex">
-                        <label>Select new image </label>
+            <div class="col-md-4 col-12 d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column align-items-center">
+                    <!-- Label and file input for selecting a new image -->
+                    <div class="mb-2 text-center">
+                        <label for="fileToUpload">Select new image</label>
                         <input type="file" name="fileToUpload" id="fileToUpload" accept="image/*" required onchange="previewImage()"> <br>
                     </div>
+                    
+                    <!-- Image preview section -->
                     <div class="m-1">
                         <!-- Preview the newly selected image -->
                         <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 400px; height: auto; margin-top:10px;" />
@@ -156,14 +160,17 @@ if (isset($_POST['add'])) {
                         <!-- Show the current image if no new one is selected -->
                         <img id="currentImage" src="<?= htmlspecialchars($showToEdit['img_dir']); ?>" alt="Current Image" style="max-width: 400px; height: auto;">
                     </div>
-
                     <!-- Color display section -->
                         <div>
                             <label for="show_color">Color of show box </label>
                             <input type="color" id="show_color" name="show_color" value="<?= htmlspecialchars($showToEdit['show_color']); ?>" />
                         </div>
                 </div>
-            <div class="col-8">
+
+
+
+                </div>
+            <div class="col-md-8 col-12 align-items-center">
                 <!-- Show title -->
                 <div class="mb-3">
                     <label for="show_name" class="form-label">Name</label>
@@ -202,7 +209,7 @@ if (isset($_POST['add'])) {
 
                 foreach ($selParts as $parts): ?>
                 <div class="row mb-2">
-                    <div class="col-2 d-flex flex-column justify-content-center align-items-center">
+                    <div class="col-sm-12 col-md-2 d-flex flex-column justify-content-center align-items-center">
                         <!-- Part name -->
                         <div class="container part-name">
                             <p class="text-center m-0"><?php echo htmlspecialchars($parts['part_name']); ?></p>
@@ -230,7 +237,7 @@ if (isset($_POST['add'])) {
                             </div>
                          </div>
                     </div>
-                    <div class="col-10">
+                    <div class="col-sm-12 col-md-10">
                         <div class="row">
                             <?php
                             // Split the string 'num_of_ep' into an array using explode
@@ -242,19 +249,12 @@ if (isset($_POST['add'])) {
                             // Loop through each episode number in the array
                             foreach ($episode_numbers as $episode_num) {
                                 // Check if the current episode is in the watched episodes array
-                                if (in_array($episode_num, $watched_ep_array)){
                                     echo '
-                                    <div class="col-1 m-1 d-flex justify-content-center align-items-center episode-box-watched ">
+                                    <div class="col-1 m-1 d-flex justify-content-center align-items-center episode-box-edit ">
                                         <!-- Content of the episode box, e.g., episode number -->
                                         <p class="m-0">' . $episode_num . '</p>
                                     </div>';
-                                } else {
-                                    echo '
-                                    <div class="col-1 m-1 d-flex justify-content-center align-items-center episode-box-unwatched">
-                                        <!-- Content of the episode box, e.g., episode number -->
-                                        <p class="m-0">' . $episode_num . '</p>
-                                    </div>';
-                                }
+
                             }
                             ?>
                         </div>
