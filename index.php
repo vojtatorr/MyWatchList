@@ -3,33 +3,37 @@ session_start();
 require_once('WatchList.php');
 include('DbConnect.php');
 
-// Create database connection
+
 $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
-// Get active shows
+
 $selshow = $instanceWatchList->getActiveshow();
 
 if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
-    // Sanitize input
+
     $watched_episodes = filter_input(INPUT_POST, 'watched_episodes', FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY);
 
     foreach ($watched_episodes as $part_id => $episodes) {
-        // Convert checked episodes array into a comma-separated string
+
         $watched_episodes_string = implode(',', $episodes);
 
-        // Step 1: Update the watched_ep column in the parts table
+        $partDetails = $instanceWatchList->getPartDetails($part_id);
+        $show_name = $partDetails['show_name'];
+        $part_name = $partDetails['part_name'];
+
+
         if (!$instanceWatchList->updateWatchedEpisodes($part_id, $watched_episodes_string)) {
-            $_SESSION['message'] = "Failed to update episodes for part ID: $part_id";
-            $_SESSION['message_type'] = "error";
+            $_SESSION['message'] = "Failed to update episodes for <strong>Show:</strong> $show_name, <strong>Part:</strong> $part_name";
+            $_SESSION['message_type'] = "danger"; 
             header('Location: index.php');
             exit;
         }
     }
 
     $_SESSION['message'] = "Watched episodes updated successfully!";
-    $_SESSION['message_type'] = "success"; // Set success message
+    $_SESSION['message_type'] = "success"; 
     header('Location: index.php');
     exit;
 }
@@ -50,14 +54,15 @@ if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
   <!-- Show list container -->
   <div class="container my-5">
 
-  <?php if (isset($_SESSION['message'])): ?>
-            <div class="alert alert-<?php echo $_SESSION['message_type']; ?>">
-                <?php
-                echo $_SESSION['message'];
-                unset($_SESSION['message']); // Clear the message after displaying it
-                ?>
-            </div>
-        <?php endif; ?>
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-<?php echo $_SESSION['message_type']; ?> alert-dismissible fade show" role="alert">
+            <?php
+            echo $_SESSION['message'];
+            unset($_SESSION['message']); // Clear the message after displaying it
+            ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
 
   <form method="post" action="index.php">
     <div class="d-flex justify-content-center my-2">

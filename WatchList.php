@@ -161,12 +161,28 @@ class WatchList
         return $stmt->execute();
     }
 
-    public function updateWatchedEpisodes($id_part, $watched_ep) {
-        $query = "UPDATE parts SET watched_ep = :watched_ep WHERE id_part = :id_part";
+    public function updateWatchedEpisodes($part_id, $watched_episodes_string) {
+        try {
+            $sql = "UPDATE parts SET watched_ep = :watched_episodes WHERE id_part = :part_id";
+            $stmt = $this->dbConn->prepare($sql);
+            $stmt->bindParam(':watched_episodes', $watched_episodes_string);
+            $stmt->bindParam(':part_id', $part_id);
+    
+            return $stmt->execute(); // Return true if successful
+        } catch (PDOException $e) {
+            return false; // Return false if the query fails
+        }
+    } 
+
+    public function getPartDetails($part_id) {
+        $query = "SELECT shows.show_name, parts.part_name 
+                  FROM parts
+                  JOIN shows ON shows.id_show = parts.id_show
+                  WHERE parts.id_part = :part_id";
         $stmt = $this->dbConn->prepare($query);
-        $stmt->bindParam(':watched_ep', $watched_ep);
-        $stmt->bindParam(':id_part', $id_part);
+        $stmt->bindParam(':part_id', $part_id);
         $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 

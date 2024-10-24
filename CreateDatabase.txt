@@ -1,27 +1,56 @@
--- Create the database
-CREATE DATABASE IF NOT EXISTS `watchlist` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `watchlist`;
-
--- Create table `parts`
 CREATE TABLE `parts` (
-  `id_part` int(11) NOT NULL AUTO_INCREMENT,
+  `id_part` int(11) NOT NULL,
   `id_show` int(11) NOT NULL,
   `part_name` varchar(100) NOT NULL,
   `op` varchar(100) NOT NULL,
   `ed` varchar(100) NOT NULL,
   `num_of_ep` varchar(255) NOT NULL,
-  `watched_ep` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_part`),
-  KEY `id_show` (`id_show`),
-  CONSTRAINT `parts_ibfk_1` FOREIGN KEY (`id_show`) REFERENCES `shows` (`id_show`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `watched_ep` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Create table `shows`
 CREATE TABLE `shows` (
-  `id_show` int(11) NOT NULL AUTO_INCREMENT,
+  `id_show` int(11) NOT NULL,
   `show_name` varchar(120) NOT NULL,
   `img_dir` varchar(255) NOT NULL,
   `show_status` int(10) NOT NULL,
-  `show_color` varchar(12) NOT NULL,
-  PRIMARY KEY (`id_show`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `show_color` varchar(12) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+
+
+
+CREATE TABLE `parts` (
+  `id_part` int(11) NOT NULL,
+  `id_show` int(11) NOT NULL,
+  `part_name` varchar(100) NOT NULL,
+  `op` varchar(100) NOT NULL,
+  `ed` varchar(100) NOT NULL,
+  `num_of_ep` varchar(255) NOT NULL,
+  `watched_ep` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `shows` (
+  `id_show` int(11) NOT NULL,
+  `show_name` varchar(120) NOT NULL,
+  `img_dir` varchar(255) NOT NULL,
+  `show_status` int(10) NOT NULL,
+  `show_color` varchar(12) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+
+INSERT INTO `shows` (`id_show`, `show_name`, `img_dir`, `show_status`, `show_color`) VALUES
+(1, 'Tokyo Ghoul', 'showImg/Tokyo Ghoul.jpg', 4, '#485456'),
+(2, 'Delicious in Dungeon', 'showImg/Delicious_in_Dungeon.jpg', 2, '#504e54'),
+(3, 'The Dragon Prince', 'showImg/The Dragon Prince.jpg', 2, '#4bc4dd'),
+(4, 'Invincible', 'showImg/Invincible.jpg', 3, '#e58612'),
+(5, 'The Last of Us', 'showImg/The Last of Us.jpg', 4, '#52514d'),
+(6, 'Better Call Saul', 'showImg/Better Call Saul.jpg', 1, '#310f16');
+
+ALTER TABLE `parts`
+  ADD PRIMARY KEY (`id_part`),
+  ADD KEY `id_show` (`id_show`);
+
+ALTER TABLE `shows`
+  ADD PRIMARY KEY (`id_show`);
+
