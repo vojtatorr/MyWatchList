@@ -103,7 +103,7 @@ function resizeImage($source_file, $target_file, $target_width, $target_height) 
     <?php include 'navbar.php'; ?>
 
     <div class="container my-4 p-2 add-show-container">
-        <form action="addshow.php" method="post" enctype="multipart/form-data">
+        <form action="addShow.php" method="post" enctype="multipart/form-data">
         <div class="row">
             <!-- Column for image (col-md-4 for medium screens and larger, col-12 for small screens) -->
             <div class="col-sm-12 col-md-4 justify-content-center align-items-center">
