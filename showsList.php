@@ -35,7 +35,7 @@ if (!empty($show_name)) {
 
     <!-- Search bar -->
     <div class="container mt-5">
-        <form class="d-flex align-items-center justify-content-center" method="get" action="showList.php">
+        <form class="d-flex align-items-center justify-content-center" method="get" action="showsList.php">
             <input class="form-control" name="show_name" type="text" placeholder="Show name" aria-label="Search show" style="width: 600px;">
             <button class="btn btn-primary" type="submit">Search</button>
         </form>
