@@ -7,6 +7,8 @@ $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
+$initialLimit = 18; 
+
 // Check if a search query has been submitted via GET method
 $show_name = filter_input(INPUT_GET, 'show_name', FILTER_SANITIZE_STRING);
 
@@ -15,7 +17,7 @@ if (!empty($show_name)) {
     $selshow = $instanceWatchList->filtershow($show_name);
 } else {
     // If no search query, show all shows
-    $selshow = $instanceWatchList->getWatchList();
+    $selshow = $instanceWatchList->getWatchListByLimit(0, $initialLimit);
 }
 ?>
 
@@ -63,6 +65,61 @@ if (!empty($show_name)) {
             <?php endif; ?>
         </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let offset = 18; // Start after the initial 18 shows
+        const limit = 12; // Load 12 shows per scroll
+        let loading = false;
+
+        async function loadMoreShows() {
+            if (loading) return; // Prevent multiple requests at once
+            loading = true;
+
+            try {
+                const response = await fetch(`loadMoreShows.php?offset=${offset}&limit=${limit}`);
+                const shows = await response.json();
+
+                if (shows.length > 0) {
+                    const container = document.querySelector('.row');
+                    shows.forEach(show => {
+                        const showElement = document.createElement('div');
+                        showElement.classList.add('col-12', 'col-md-4', 'col-lg-2');
+                        showElement.innerHTML = `
+                            <div class="container m-2 show-container text-center" style="background-color: ${show.show_color || '#ffffff'};">
+                                <a class="btn m-0 p-0" href="editShow.php?id=${show.id_show}">
+                                    <img src="${show.img_dir}" alt="${show.show_name}" class="img-fluid rounded-img">
+                                    <p class="text-center m-1 show-title">${show.show_name}</p>
+                                </a>
+                            </div>
+                        `;
+                        container.appendChild(showElement);
+                    });
+
+                    // Increment the offset by 12 after each load
+                    offset += limit;
+                } else {
+                    // No more shows to load; remove the scroll event listener
+                    window.removeEventListener('scroll', handleScroll);
+                }
+            } catch (error) {
+                console.error('Error loading shows:', error);
+            } finally {
+                loading = false; // Reset loading flag
+            }
+        }
+
+        function handleScroll() {
+            // Check if the user has scrolled near the bottom of the page
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                loadMoreShows();
+            }
+        }
+
+        // Attach the scroll event listener
+        window.addEventListener('scroll', handleScroll);
+    });
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

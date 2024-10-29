@@ -8,7 +8,6 @@ $conn = new DbConnect();
 $dbConnection = $conn->connect();
 $instanceWatchList = new WatchList($dbConnection);
 
-
 $selshow = $instanceWatchList->getActiveshow();
 
 if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
@@ -142,5 +141,6 @@ if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
         }
     }
 </script>
+
 </body>
 </html>

@@ -185,6 +185,15 @@ class WatchList
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getWatchListByLimit($offset, $limit) {
+        $sql = "SELECT * FROM shows LIMIT :offset, :limit";
+        $stmt = $this->dbConn->prepare($sql);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 
 
