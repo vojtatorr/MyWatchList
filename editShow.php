@@ -155,7 +155,7 @@ if (isset($_POST['add'])) {
                     <!-- Image preview section -->
                     <div class="m-1">
                         <!-- Preview the newly selected image -->
-                        <img id="imgPreview" src="#" alt="Selected image" style="display:none; max-width: 400px; height: auto; margin-top:10px;" />
+                        <img id="imgPreview" src="#" alt="Selected image" style="display:none; width: auto; max-height: 400px; margin-top:10px;" />
 
                         <!-- Show the current image if no new one is selected -->
                         <img id="currentImage" src="<?= htmlspecialchars($showToEdit['img_dir']); ?>" alt="Current Image" style="max-width: 400px; height: auto;">

@@ -74,7 +74,7 @@ if (isset($_POST['saveEp']) && isset($_POST['watched_episodes'])) {
         style="background-color: <?= htmlspecialchars($show['show_color']) ?: '#ffffff'; ?>;"> <!-- Set background color -->
         <div class="row">
             <div class="col-md-3 col-12 d-flex justify-content-center">
-                <img src="<?= htmlspecialchars($show['img_dir']); ?>" alt="<?= htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img" style="max-width: 400px; height: auto;">
+                <img src="<?= htmlspecialchars($show['img_dir']); ?>" alt="<?= htmlspecialchars($show['show_name']); ?>" class="img-fluid rounded-img" style="width: auto; max-height: 400px;">
             </div>
             <div class="col-md-9 col-12 align-items-center">
                 <a href="editShow.php?id=<?= htmlspecialchars($show['id_show']); ?>" class="edit-link">
